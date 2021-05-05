@@ -42,6 +42,8 @@ var dataElem = {
         steel: false
 };
 
+var pokemonId = []
+
 var pokemonData = [];
 
 // async function getPokemonData(index) {
@@ -63,7 +65,7 @@ async function getData(url) {
 }
 
 const getPokemon = () => {
-    for (let i = 1; i < 8; i++) {
+    for (let i = 1; i < 200; i++) {
         fetch(`https://pokeapi.co/api/v2/pokemon/${i}`).then(res => {
             return res.json()
         }).then((data) => {
@@ -149,16 +151,18 @@ const elementFilter = (elem) => {
 const pokemonSearch = () => {
     console.log('searching');
     pokemonContainerDoc.innerHTML = "";
+    pokemonId = [];
     getPokemonType();
 };
 
 const getPokemonType = () => {
-    for (let i = 1; i < 8; i++) {
+    for (let i = 1; i < 200; i++) {
         fetch(`https://pokeapi.co/api/v2/pokemon/${i}`).then(res => {
             return res.json()
         }).then((data) => {
             data.types.forEach((elem) => {
-                if (dataElem[elem.type.name]) {
+                if (dataElem[elem.type.name] && !pokemonId.includes(data.id)) {
+                    pokemonId.push(data.id);
                     printPokemon(data);
                 }
             })
