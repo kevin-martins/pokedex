@@ -22,43 +22,31 @@ const typeColors = {
 };
 
 var dataElem = {
-        fire: false,
-        water: false,
-        grass: false,
-        bug: false,
-        flying: false,
-        normal: false,
-        poison: false,
-        electric: false,
-        ground: false,
-        fairy: false,
-        fighting: false,
-        psychic: false,
-        rock: false,
-        ghost: false,
-        ice: false,
-        dragon: false,
-        dark: false,
-        steel: false
+    fire: false,
+    water: false,
+    grass: false,
+    bug: false,
+    flying: false,
+    normal: false,
+    poison: false,
+    electric: false,
+    ground: false,
+    fairy: false,
+    fighting: false,
+    psychic: false,
+    rock: false,
+    ghost: false,
+    ice: false,
+    dragon: false,
+    dark: false,
+    steel: false
 };
 
-var pokemonId = []
+var input = "";
+var pokemonId = [];
+var pokemonData = [];
 
-async function getData(url) {
-    const response = await fetch(url);
-    return await response.json();
-}
-
-const getPokemon = () => {
-    for (let i = 1; i < 899; i++) {
-        fetch(`https://pokeapi.co/api/v2/pokemon/${i}`).then(res => {
-            return res.json()
-        }).then((data) => {
-            printPokemon(data)
-        });
-    }
-}
-
+//Return all pokemon's type
 const printPokemonTypes = (pokemon) => {
     const pokemonTypes = document.createElement('div');
     pokemonTypes.className = 'pokemonTypes';
@@ -72,6 +60,7 @@ const printPokemonTypes = (pokemon) => {
     return pokemonTypes;
 }
 
+//Get the pokemon information and print everything we need on the screen
 const printPokemon = (pokemon) => {
     const pokemonCard = document.createElement('div');
     pokemonCard.className = "pokemonCard";
@@ -94,6 +83,82 @@ const printPokemon = (pokemon) => {
     pokemonContainerDoc.appendChild(pokemonCard);
 }
 
+const printAllPokemon = () => {
+    pokemonContainerDoc.innerHTML = "";
+    pokemonData.forEach((pokemon) => {
+        printPokemon(pokemon);
+    });
+}
+
+const getPokemonTypeName = () => {
+    pokemonContainerDoc.innerHTML = "";
+    pokemonId = [];
+    pokemonData.forEach((pokemon) => {
+        if (pokemon.name.includes(input)) {
+            pokemon.types.forEach((elem) => {
+                if (dataElem[elem.type.name] && !pokemonId.includes(pokemon.id)) {
+                    pokemonId.push(pokemon.id);
+                    printPokemon(pokemon);
+                }
+            });
+        }
+    });
+}
+
+// Check both, button selection & input text
+const checkBothTypeInput = () => {
+    const elem = Object.entries(dataElem).map((value) => value[1]).every((value) => !value);
+
+    if (!input && elem) {
+        printAllPokemon();
+    } else if (input && elem) {
+        getPokemonName();
+    } else if (!input && !elem) {
+        getPokemonType();
+    } else if (input && !elem) {
+        getPokemonTypeName();
+    }
+}
+
+//#region Manage input text
+
+const getPokemonName = () => {
+    pokemonContainerDoc.innerHTML = "";
+    pokemonData.forEach((pokemon) => {
+        if (pokemon.name.includes(input)) {
+            printPokemon(pokemon);
+        }
+    });
+}
+
+const pokemonInputSearch = (event) => {
+    if (event.key == "Backspace") {
+        input = input.split('');
+        input.pop();
+        input = input.join('');
+    } else if ("abcdefghijklmnopqrstuvwxyz".includes(event.key)) {
+        input += event.key;
+    }
+    checkBothTypeInput();
+};
+
+//#endregion
+
+//#region Manage button selection
+
+const getPokemonType = () => {
+    pokemonContainerDoc.innerHTML = "";
+    pokemonId = [];
+    pokemonData.forEach((pokemon) => {
+        pokemon.types.forEach((elem) => {
+            if (dataElem[elem.type.name] && !pokemonId.includes(pokemon.id)) {
+                pokemonId.push(pokemon.id);
+                printPokemon(pokemon);
+            }
+        });
+    });
+};
+
 const elementFilter = (elem) => {
     const button = document.getElementById(`${elem}`).classList;
     dataElem[elem] = !dataElem[elem];
@@ -104,65 +169,45 @@ const elementFilter = (elem) => {
         button.remove(`${elem}Focus`);
         button.add(`${elem}Unfocus`);
     }
-    pokemonFilterSearch();
+    checkBothTypeInput();
 };
 
-const pokemonFilterSearch = () => {
-    console.log('searching');
-    pokemonContainerDoc.innerHTML = "";
-    pokemonId = [];
-    getPokemonType();
-};
+//#endregion
 
-const getPokemonType = () => {
-    for (let i = 1; i < 899; i++) {
-        fetch(`https://pokeapi.co/api/v2/pokemon/${i}`).then(res => {
-            return res.json()
-        }).then((data) => {
-            data.types.forEach((elem) => {
-                if (dataElem[elem.type.name] && !pokemonId.includes(data.id)) {
-                    pokemonId.push(data.id);
-                    printPokemon(data);
-                }
-            })
-        });
-    }
+//#region Set screen while data is ready to be used
+
+const preparingData = () => {
+    const loadingContainerDoc = document.getElementById("loadingContainer");
+    const interactiveContentDoc = document.getElementById('main');
+
+    loadingContainerDoc.classList.add('loadingHidden');
+    loadingContainerDoc.classList.remove('loadingContainer');
+    interactiveContentDoc.classList.remove('mainHidden');
+    printAllPokemon();
 }
 
-var input = "";
+//#endregion
 
-const pokemonInputSearch = (event) => {
-    if (event.key == "Backspace") {
-        input = input.split('');
-        input.pop();
-        input = input.join('');
-    } else if ("abcdefghijklmnopqrstuvwxyz".includes(event.key)) {
-        input += event.key;
-    }
-    
-    getPokemonName();
-    if (!input) {
-        for (let i = 1; i < 899; i++) {
-            fetch(`https://pokeapi.co/api/v2/pokemon/${i}`).then(res => {
-                return res.json()
-            }).then((data) => {
-                printPokemon(data)
-            });
-        }
-    }
-};
+//#region Fetch data and stock into variable
 
-const getPokemonName = () => {
-    pokemonContainerDoc.innerHTML = "";
+async function getData() {
+    const arrayOfPromise = [];
     for (let i = 1; i < 899; i++) {
-        fetch(`https://pokeapi.co/api/v2/pokemon/${i}`).then(res => {
-            return res.json()
-        }).then((data) => {
-            if (data.name.includes(input)) {
-            printPokemon(data);
+        arrayOfPromise.push(fetch(`https://pokeapi.co/api/v2/pokemon/${i}`));
+    }
+
+    Promise.allSettled(arrayOfPromise)
+    .then(async (results) => {
+        for (result of results) {
+            if (result.status === "fulfilled") {
+                const data = await result.value.json();
+                pokemonData.push(data);
             }
-        });
-    }
+        }
+        preparingData();
+    })
 }
 
-getPokemon();
+//#endregion
+
+getData();
