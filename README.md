@@ -17,4 +17,4 @@ When finished, input field and button selection will be revealed.
 
 # Wanna try?
 
-have fun! https://kevin-martins.github.io/Pokemon/
+have fun! https://kevin-martins.github.io/Pokedex/
