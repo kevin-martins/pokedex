@@ -104,10 +104,10 @@ const elementFilter = (elem) => {
         button.remove(`${elem}Focus`);
         button.add(`${elem}Unfocus`);
     }
-    pokemonSearch();
+    pokemonFilterSearch();
 };
 
-const pokemonSearch = () => {
+const pokemonFilterSearch = () => {
     console.log('searching');
     pokemonContainerDoc.innerHTML = "";
     pokemonId = [];
@@ -125,6 +125,44 @@ const getPokemonType = () => {
                     printPokemon(data);
                 }
             })
+        });
+    }
+}
+
+var input = "";
+
+const pokemonInputSearch = (event) => {
+    if (event.key == "Backspace") {
+        input = input.split('');
+        input.pop();
+        input = input.join('');
+        getPokemonName();
+    }
+    if ("abcdefghijklmnopqrstuvwxyz".includes(event.key)) {
+        input += event.key;
+        getPokemonName();
+    }
+    
+    if (!input) {
+        for (let i = 1; i < 899; i++) {
+            fetch(`https://pokeapi.co/api/v2/pokemon/${i}`).then(res => {
+                return res.json()
+            }).then((data) => {
+                printPokemon(data)
+            });
+        }
+    }
+};
+
+const getPokemonName = () => {
+    pokemonContainerDoc.innerHTML = "";
+    for (let i = 1; i < 899; i++) {
+        fetch(`https://pokeapi.co/api/v2/pokemon/${i}`).then(res => {
+            return res.json()
+        }).then((data) => {
+            if (data.name.includes(input)) {
+            printPokemon(data);
+            }
         });
     }
 }
