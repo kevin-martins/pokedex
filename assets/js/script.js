@@ -44,28 +44,13 @@ var dataElem = {
 
 var pokemonId = []
 
-var pokemonData = [];
-
-// async function getPokemonData(index) {
-//     const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${index}`);
-//     const pokemon = await res.json();
-
-//     pokemonData.push({
-//         name: pokemon.name,
-//         id: pokemon.id,
-//         image: pokemon.sprites.other["official-artwork"]["front_default"],
-//         stats: pokemon.stats,
-//         types: pokemon.types
-//     });
-// }
-
 async function getData(url) {
     const response = await fetch(url);
     return await response.json();
 }
 
 const getPokemon = () => {
-    for (let i = 1; i < 200; i++) {
+    for (let i = 1; i < 899; i++) {
         fetch(`https://pokeapi.co/api/v2/pokemon/${i}`).then(res => {
             return res.json()
         }).then((data) => {
@@ -73,21 +58,6 @@ const getPokemon = () => {
         });
     }
 }
-
-// for (let i = 1; i < 2/*data - 219*/; i++) {
-//     fetch(`https://pokeapi.co/api/v2/pokemon/${i}`).then(res => {
-//         return res.json()
-//     }).then((data) => {
-//         pokemonData.push({
-//             name: data.name,
-//             id: data.id,
-//             image: data.sprites.other["official-artwork"]["front_default"],
-//             stats: data.stats,
-//             types: data.types
-//         })
-//     }).then(() => console.log(pokemonData[i]));
-// }
-
 
 const printPokemonTypes = (pokemon) => {
     const pokemonTypes = document.createElement('div');
@@ -107,32 +77,21 @@ const printPokemon = (pokemon) => {
     pokemonCard.className = "pokemonCard";
 
     const pokemonName = document.createElement('h1');
-    const name = document.createTextNode(`${pokemon.name} n°${pokemon.id}`);
+    const name = document.createTextNode(`${pokemon.name} | ${pokemon.id}`);
     pokemonName.appendChild(name);
 
     const pokemonImage = document.createElement('img');
     pokemonImage.src = `${pokemon.sprites.other["official-artwork"]["front_default"]}`;
 
-    const pokemonStats = document.createElement('div');
-    pokemonStats.className = 'pokemonStats';
+    // const pokemonStats = document.createElement('div');
+    // pokemonStats.className = 'pokemonStats';
     // pokemon.stats.forEach((elem) => console.log(elem))
 
     pokemonCard.appendChild(pokemonName);
     pokemonCard.appendChild(pokemonImage);
-    pokemonCard.appendChild(pokemonStats);
+    // pokemonCard.appendChild(pokemonStats);
     pokemonCard.appendChild(printPokemonTypes(pokemon));
     pokemonContainerDoc.appendChild(pokemonCard);
-
-    // pokemonDoc.innerHTML += `<div class="pokemonCard">
-    //                             <h2 id="pokemonName">${pokemon.name}</h2>
-    //                             <img src="${pokemon.sprites.other["official-artwork"]["front_default"]}" alt="">
-    //                             <div class="pokemonStats">
-    //                                 <p></p>
-    //                             </div>
-    //                             <div class="pokemonTypes">
-    //                                 <p></p>
-    //                             </div>
-    //                         </div>`;
 }
 
 const elementFilter = (elem) => {
@@ -156,7 +115,7 @@ const pokemonSearch = () => {
 };
 
 const getPokemonType = () => {
-    for (let i = 1; i < 200; i++) {
+    for (let i = 1; i < 899; i++) {
         fetch(`https://pokeapi.co/api/v2/pokemon/${i}`).then(res => {
             return res.json()
         }).then((data) => {
