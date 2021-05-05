@@ -324,6 +324,7 @@ ul :nth-child(18) button:hover {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+    gap: 10px;
 }
 
 .pokemonCard {
