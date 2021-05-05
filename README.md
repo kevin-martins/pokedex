@@ -9,12 +9,11 @@ When finished, input field and button selection will be revealed.
     Its purpose is to search the pokemon through all pokemon's pictures.
 
 # Button selection
-    There is also many button. 
-    Each representing an pokemon's element type.
+    There is also many button. Each representing an pokemon's element type.
     Selecting an element will print every pokemon which has at least one of its type as it's power type.
 
 # Combination
-    Yes, you can also combine both input and type selection to get the one you're looking for.
+    You can also combine both input and type selection to get the one you're looking for.
 
 # Wanna try?
 
