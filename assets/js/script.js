@@ -136,13 +136,11 @@ const pokemonInputSearch = (event) => {
         input = input.split('');
         input.pop();
         input = input.join('');
-        getPokemonName();
-    }
-    if ("abcdefghijklmnopqrstuvwxyz".includes(event.key)) {
+    } else if ("abcdefghijklmnopqrstuvwxyz".includes(event.key)) {
         input += event.key;
-        getPokemonName();
     }
     
+    getPokemonName();
     if (!input) {
         for (let i = 1; i < 899; i++) {
             fetch(`https://pokeapi.co/api/v2/pokemon/${i}`).then(res => {
