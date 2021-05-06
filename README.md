@@ -1,4 +1,4 @@
-# Pokemon
+# Pokedex
 
 The purpose of this project was to parse through a web API and take needed informations.
 When lauching, you'll have to wait till the programme takes all information from the server.
