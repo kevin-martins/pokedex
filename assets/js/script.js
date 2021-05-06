@@ -42,8 +42,11 @@ var dataElem = {
     steel: false
 };
 
+//Get the value input
 var input = "";
+//Used to check if pokemon is already print (not get pokemon occurences)
 var pokemonId = [];
+//Get pokemon API
 var pokemonData = [];
 
 //Return all pokemon's type
@@ -60,17 +63,26 @@ const printPokemonTypes = (pokemon) => {
     return pokemonTypes;
 }
 
+const printPokemonInfo = (pokemon) => {
+    console.log(pokemon.sprites['front_default']);
+    console.log(pokemon.sprites['front_shiny']);
+    console.log(pokemon.sprites.other["official-artwork"]["front_default"]);
+    console.log(pokemon.id);
+}
+
 //Get the pokemon information and print everything we need on the screen
 const printPokemon = (pokemon) => {
     const pokemonCard = document.createElement('div');
     pokemonCard.className = "pokemonCard";
 
     const pokemonName = document.createElement('h1');
-    const name = document.createTextNode(`${pokemon.name} | ${pokemon.id}`);
+    const name = document.createTextNode(`${pokemon.name}`);
     pokemonName.appendChild(name);
 
+    
     const pokemonImage = document.createElement('img');
     pokemonImage.src = `${pokemon.sprites.other["official-artwork"]["front_default"]}`;
+    pokemonImage.onclick = function() { return printPokemonInfo(pokemon) };
 
     // const pokemonStats = document.createElement('div');
     // pokemonStats.className = 'pokemonStats';
@@ -80,17 +92,21 @@ const printPokemon = (pokemon) => {
     pokemonCard.appendChild(pokemonImage);
     // pokemonCard.appendChild(pokemonStats);
     pokemonCard.appendChild(printPokemonTypes(pokemon));
-    pokemonContainerDoc.appendChild(pokemonCard);
+    return pokemonCard;
 }
 
+
 const printAllPokemon = () => {
+    const fragments = document.createDocumentFragment();
     pokemonContainerDoc.innerHTML = "";
     pokemonData.forEach((pokemon) => {
-        printPokemon(pokemon);
+        fragments.appendChild(printPokemon(pokemon));
     });
+    pokemonContainerDoc.appendChild(fragments);
 }
 
 const getPokemonTypeName = () => {
+    const fragments = document.createDocumentFragment();
     pokemonContainerDoc.innerHTML = "";
     pokemonId = [];
     pokemonData.forEach((pokemon) => {
@@ -98,11 +114,12 @@ const getPokemonTypeName = () => {
             pokemon.types.forEach((elem) => {
                 if (dataElem[elem.type.name] && !pokemonId.includes(pokemon.id)) {
                     pokemonId.push(pokemon.id);
-                    printPokemon(pokemon);
+                    fragments.appendChild(printPokemon(pokemon));
                 }
             });
         }
     });
+    pokemonContainerDoc.appendChild(fragments);
 }
 
 // Check both, button selection & input text
@@ -120,15 +137,17 @@ const checkBothTypeInput = () => {
     }
 }
 
-//#region Manage input text
+//#region Manage & Result of input text
 
 const getPokemonName = () => {
+    const fragments = document.createDocumentFragment();
     pokemonContainerDoc.innerHTML = "";
     pokemonData.forEach((pokemon) => {
         if (pokemon.name.includes(input)) {
-            printPokemon(pokemon);
+            fragments.appendChild(printPokemon(pokemon));
         }
     });
+    pokemonContainerDoc.appendChild(fragments);
 }
 
 const pokemonInputSearch = (event) => {
@@ -144,19 +163,21 @@ const pokemonInputSearch = (event) => {
 
 //#endregion
 
-//#region Manage button selection
+//#region Manage & Result of button selection
 
 const getPokemonType = () => {
+    const fragments = document.createDocumentFragment();
     pokemonContainerDoc.innerHTML = "";
     pokemonId = [];
     pokemonData.forEach((pokemon) => {
         pokemon.types.forEach((elem) => {
             if (dataElem[elem.type.name] && !pokemonId.includes(pokemon.id)) {
                 pokemonId.push(pokemon.id);
-                printPokemon(pokemon);
+                fragments.appendChild(printPokemon(pokemon));
             }
         });
     });
+    pokemonContainerDoc.appendChild(fragments);
 };
 
 const elementFilter = (elem) => {
@@ -202,6 +223,7 @@ async function getData() {
             if (result.status === "fulfilled") {
                 const data = await result.value.json();
                 pokemonData.push(data);
+                //console.log(data)
             }
         }
         preparingData();

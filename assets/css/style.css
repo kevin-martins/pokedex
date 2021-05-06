@@ -5,7 +5,21 @@
 }
 
 body {
+
     padding: 0px 50px;
+}
+
+header {
+    padding: 25px;
+    text-align: center;
+}
+
+header h1 {
+    font-size: 7rem;
+}
+
+header p {
+    font-size: 1.4rem;
 }
 
 .loadingHidden {
@@ -17,7 +31,7 @@ body {
     justify-content: center;
     align-items: center;
     width: 100%;
-    height: 100vh;
+    height: 75vh;
 }
 
 .loadingAnimation {
@@ -66,12 +80,15 @@ body {
 
 .mainHidden {
     display: none;
+    position: -webkit-sticky;
+    position: sticky;
+    top: 20px;
 }
 
 .searchBar {
     min-width: 300px;
     max-width: 500px;
-    margin: 100px auto 0px auto;
+    margin: 50px auto 0px auto;
 }
 
 input {
@@ -114,13 +131,13 @@ button {
 }
 
 .fireFocus {
-    background: #EA7A3C;
+    background-color: #EA7A3C;
     color: white;
 }
 
 ul :nth-child(1) button:hover {
     cursor: pointer;
-    background: #eb7a3d;
+    background-color: #eb7a3d;
     color: white;
 }
 
@@ -129,13 +146,13 @@ ul :nth-child(1) button:hover {
 }
 
 .waterFocus {
-    background: #539AE2;
+    background-color: #539AE2;
     color: white;
 }
 
 ul :nth-child(2) button:hover {
     cursor: pointer;
-    background: #539AE2;
+    background-color: #539AE2;
     color: white;
 }
 
@@ -144,13 +161,13 @@ ul :nth-child(2) button:hover {
 }
 
 .grassFocus {
-    background: #71C558;
+    background-color: #71C558;
     color: white;
 }
 
 ul :nth-child(3) button:hover {
     cursor: pointer;
-    background: #71C558;
+    background-color: #71C558;
     color: white;
 }
 
@@ -159,13 +176,13 @@ ul :nth-child(3) button:hover {
 }
 
 .bugFocus {
-    background: #94BC4A;
+    background-color: #94BC4A;
     color: white;
 }
 
 ul :nth-child(4) button:hover {
     cursor: pointer;
-    background: #94BC4A;
+    background-color: #94BC4A;
     color: white;
 }
 
@@ -174,13 +191,13 @@ ul :nth-child(4) button:hover {
 }
 
 .flyingFocus {
-    background: #7DA6DE;
+    background-color: #7DA6DE;
     color: white;
 }
 
 ul :nth-child(5) button:hover {
     cursor: pointer;
-    background: #7DA6DE;
+    background-color: #7DA6DE;
     color: white;
 }
 
@@ -189,13 +206,13 @@ ul :nth-child(5) button:hover {
 }
 
 .normalFocus {
-    background: #AAB09F;
+    background-color: #AAB09F;
     color: white;
 }
 
 ul :nth-child(6) button:hover {
     cursor: pointer;
-    background: #AAB09F;
+    background-color: #AAB09F;
     color: white;
 }
 
@@ -204,13 +221,13 @@ ul :nth-child(6) button:hover {
 }
 
 .poisonFocus {
-    background: #B468B7;
+    background-color: #B468B7;
     color: white;
 }
 
 ul :nth-child(7) button:hover {
     cursor: pointer;
-    background: #B468B7;
+    background-color: #B468B7;
     color: white;
 }
 
@@ -219,13 +236,13 @@ ul :nth-child(7) button:hover {
 }
 
 .electricFocus {
-    background: #E5C531;
+    background-color: #E5C531;
     color: white;
 }
 
 ul :nth-child(8) button:hover {
     cursor: pointer;
-    background: #E5C531;
+    background-color: #E5C531;
     color: white;
 }
 
@@ -234,13 +251,13 @@ ul :nth-child(8) button:hover {
 }
 
 .groundFocus {
-    background: #CC9F4F;
+    background-color: #CC9F4F;
     color: white;
 }
 
 ul :nth-child(9) button:hover {
     cursor: pointer;
-    background: #CC9F4F;
+    background-color: #CC9F4F;
     color: white;
 }
 
@@ -249,13 +266,13 @@ ul :nth-child(9) button:hover {
 }
 
 .fairyFocus {
-    background: #E397D1;
+    background-color: #E397D1;
     color: white;
 }
 
 ul :nth-child(10) button:hover {
     cursor: pointer;
-    background: #E397D1;
+    background-color: #E397D1;
     color: white;
 }
 
@@ -264,13 +281,13 @@ ul :nth-child(10) button:hover {
 }
 
 .fightingFocus {
-    background: #CB5F48;
+    background-color: #CB5F48;
     color: white;
 }
 
 ul :nth-child(11) button:hover {
     cursor: pointer;
-    background: #CB5F48;
+    background-color: #CB5F48;
     color: white;
 }
 
@@ -279,13 +296,13 @@ ul :nth-child(11) button:hover {
 }
 
 .psychicFocus {
-    background: #E5709B;
+    background-color: #E5709B;
     color: white;
 }
 
 ul :nth-child(12) button:hover {
     cursor: pointer;
-    background: #E5709B;
+    background-color: #E5709B;
     color: white;
 }
 
@@ -294,13 +311,13 @@ ul :nth-child(12) button:hover {
 }
 
 .rockFocus {
-    background: #B2A061;
+    background-color: #B2A061;
     color: white;
 }
 
 ul :nth-child(13) button:hover {
     cursor: pointer;
-    background: #B2A061;
+    background-color: #B2A061;
     color: white;
 }
 
@@ -309,13 +326,13 @@ ul :nth-child(13) button:hover {
 }
 
 .ghostFocus {
-    background: #846AB6;
+    background-color: #846AB6;
     color: white;
 }
 
 ul :nth-child(14) button:hover {
     cursor: pointer;
-    background: #846AB6;
+    background-color: #846AB6;
     color: white;
 }
 
@@ -324,13 +341,13 @@ ul :nth-child(14) button:hover {
 }
 
 .iceFocus {
-    background: #70CBD4;
+    background-color: #70CBD4;
     color: white;
 }
 
 ul :nth-child(15) button:hover {
     cursor: pointer;
-    background: #70CBD4;
+    background-color: #70CBD4;
     color: white;
 }
 
@@ -339,13 +356,13 @@ ul :nth-child(15) button:hover {
 }
 
 .dragonFocus {
-    background: #6A7BAF;
+    background-color: #6A7BAF;
     color: white;
 }
 
 ul :nth-child(16) button:hover {
     cursor: pointer;
-    background: #6A7BAF;
+    background-color: #6A7BAF;
     color: white;
 }
 
@@ -354,13 +371,13 @@ ul :nth-child(16) button:hover {
 }
 
 .darkFocus {
-    background: #736C75;
+    background-color: #736C75;
     color: white;
 }
 
 ul :nth-child(17) button:hover {
     cursor: pointer;
-    background: #736C75;
+    background-color: #736C75;
     color: white;
 }
 
@@ -369,14 +386,32 @@ ul :nth-child(17) button:hover {
 }
 
 .steelFocus {
-    background: #89A1B0;
+    background-color: #89A1B0;
     color: white;
 }
 
 ul :nth-child(18) button:hover {
     cursor: pointer;
-    background: #89A1B0;
+    background-color: #89A1B0;
     color: white;
+}
+
+.filter {
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    right: 0px;
+    top: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, .3);
+}
+
+#pokemonInformation {
+    background-color: white;
+    width: 700px;
+    height: 400px;
 }
 
 #pokemonContainer {
@@ -390,30 +425,36 @@ ul :nth-child(18) button:hover {
 .pokemonCard {
     width: 300px;
     height: 400px;
-    background: rgba(128, 128, 128, 0.371);
     margin: 10px auto;
-}
-
-.pokemonCard:hover {
-    border-left: 2px solid red;
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, .15);
 }
 
 .pokemonCard h1 {
     text-align: center;
-    text-transform: capitalize;
+    margin-top: 8px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
 }
 
 .pokemonCard img {
     width: 100%;
+    transition: .5s;
+}
+
+.pokemonCard img:hover {
+    transform: scale(1.1);
+    cursor: pointer;
 }
 
 .pokemonTypes {
     display: flex;
     flex-direction: row;
+    margin: auto;
+    width: 200px;
 }
 
 .pokemonTypes p {
-    width: 60px;
+    padding: 2px 5px;
     font-size: 1.2em;
     border-radius: 4px;
     text-align: center;
