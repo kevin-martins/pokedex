@@ -13,6 +13,14 @@
         <p>All Pokemon in one place</p>
     </header>
 
+    <div class="statContainer">
+        <div class="stats">
+            <div class="value">
+    
+            </div>
+        </div>
+    </div>
+
     <div class="loadingContainer" id="loadingContainer">
         <div class="loadingAnimation" id="loadingAnimation">
             <span style="--i:1;"></span>
@@ -120,8 +128,9 @@
         </nav>
     </div>
 
-    <div class="filterHidden" id="morePokemonInfo">
-
+    <div class="filterHidden" id="pokemonInfoContainer">
+        <button onclick="exitFilterButton()">X</button>
+        <div class="pokemonInfoCard" id="morePokemonInfo"></div>
     </div>
 
     <div id="pokemonContainer">

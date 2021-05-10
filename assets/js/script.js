@@ -1,4 +1,5 @@
 const pokemonContainerDoc = document.getElementById('pokemonContainer');
+const pokemonInfoContainerDoc = document.getElementById('pokemonInfoContainer');
 const morePokemonInfoDoc = document.getElementById('morePokemonInfo');
 
 const typeColors = {
@@ -89,13 +90,37 @@ const printDoubleDamageFrom = (damage) => {
     //console.log('double', damage);
 }
 
-const printDamageRelations = (damageRelations) => {
+const printDamageRelations = (damageRelations, fragments) => {
     printDoubleDamageFrom(damageRelations['double_damage_from']);
     printDoubleDamageTo(damageRelations['double_damage_to']);
     printHalfDamageFrom(damageRelations['half_damage_from']);
     printHalfDamageTo(damageRelations['half_damage_to']);
     printNoDamageFrom(damageRelations['no_damage_from']);
     printNoDamageTo(damageRelations['no_damage_to']);
+};
+
+const printPokemonstats = (pokemon) => {
+    console.log(pokemon.stats);
+    const fragments = document.createDocumentFragment();
+    const statContainerDoc = document.createElement('section');
+    pokemon.stats.forEach((stats) => {
+        const statDoc = document.createElement('div');
+        const statRangeDoc = document.createElement('div');
+        const statType = document.createTextNode(stats.stat.name);
+        const statValue = document.createTextNode(stats.base_stat);
+
+        statContainerDoc.className = 'statContainer';
+        statDoc.className = 'stats';
+        statRangeDoc.className = `${stats.stat.name}`;
+
+        statRangeDoc.style.height = `${(100-stats.base_stat)*1.3}%`;
+
+        statDoc.appendChild(statRangeDoc);
+        statDoc.appendChild(statType);
+        statContainerDoc.appendChild(statDoc);
+        fragments.appendChild(statContainerDoc);
+    });
+    return fragments;
 };
 
 const printPokemonGameImage = (pokemon) => {
@@ -106,42 +131,44 @@ const printPokemonGameImage = (pokemon) => {
     pokemonGameImageNormal.src = `${pokemon.sprites['front_default']}`;
     pokemonGameImageShiny.src = `${pokemon.sprites['front_shiny']}`;
 
-    pokemonCardImage.className = '';
     pokemonCardImage.appendChild(pokemonGameImageNormal);
     pokemonCardImage.appendChild(pokemonGameImageShiny);
+    pokemonCardImage.className = 'pokemonImageCard';
     
     return pokemonCardImage;
-}
+};
+
+const exitFilterButton = () => {
+    pokemonInfoContainerDoc.classList.remove('filter');
+    pokemonInfoContainerDoc.classList.add('filterHidden');
+};
 
 const printPokemonInfo = async (pokemon) => {
     const data = await fetch(`https://pokeapi.co/api/v2/type`);
     const dataTypes = await data.json();
-    const pokemonCard = document.createElement('div');
-    const exitButton = document.createElement('button');
+    const pokemonName = document.createElement('h1');
+    const name = document.createTextNode(pokemon.name);
     const fragments = document.createDocumentFragment();
 
-    pokemonCard.className = 'pokemonInfoCard';
-    exitButton.onclick = function() {
-        morePokemonInfoDoc.classList.remove('filter');
-        morePokemonInfoDoc.classList.add('filterHidden');
-    };
-    morePokemonInfoDoc.classList.add('filter');
-    morePokemonInfoDoc.classList.remove('filterHidden');
+    pokemonName.appendChild(name);
+    pokemonInfoContainerDoc.classList.add('filter');
+    pokemonInfoContainerDoc.classList.remove('filterHidden');
     morePokemonInfoDoc.innerHTML = "";
 
+    fragments.appendChild(pokemonName);
     fragments.appendChild(printPokemonGameImage(pokemon));
-    pokemonCard.appendChild(fragments);
+    fragments.appendChild(printPokemonstats(pokemon));
+    morePokemonInfoDoc.appendChild(fragments);
     pokemon.types.forEach((elem) => {
         dataTypes.results.forEach(async (type) => {
             if (elem.type.name === type.name) {
                 const dataDamageRelation = await fetch(type.url);
                 const pokemonDamageRelation = await dataDamageRelation.json();
-                printDamageRelations(pokemonDamageRelation['damage_relations']);
+                printDamageRelations(pokemonDamageRelation['damage_relations'], fragments);
             }
         })
     })
-    morePokemonInfoDoc.appendChild(exitButton);
-    morePokemonInfoDoc.appendChild(pokemonCard);
+    pokemonInfoContainerDoc.appendChild(morePokemonInfoDoc);
 };
 
 //#region Get specific pokemon information and print everything we need from it to the screen

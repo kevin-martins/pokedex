@@ -403,24 +403,49 @@ ul :nth-child(18) button:hover {
 .filter {
     position: fixed;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     right: 0px;
     top: 0;
     width: 100%;
     height: 100vh;
-    background-color: rgba(0, 0, 0, .3);
+    background-color: rgba(0, 0, 0, .7);
+    z-index: 1;
 }
 
 .pokemonInfoCard {
     width: 600px;
     height: 500px;
     margin: 10px auto;
+    background-color: white;
+    border-radius: 15px;
     box-shadow: 5px 5px 5px rgba(0, 0, 0, .15);
 }
 
 .pokemonInfoCard img {
-    width: 150px;
+    width: 200px;
+}
+
+.filter button {
+    position: relative;
+    left: 32vh;
+    width: 50px;
+    height: 50px;
+    background-color: none;
+}
+
+.filter button:hover {
+    color: rgba(255, 255, 255, 0.364);
+    cursor: pointer;
+    font-size: 1.6rem;
+    transition: .4s;
+}
+
+.pokemonImageCard {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
 }
 
 #pokemonInformation {
@@ -444,7 +469,7 @@ ul :nth-child(18) button:hover {
     box-shadow: 5px 5px 5px rgba(0, 0, 0, .15);
 }
 
-.pokemonCard h1 {
+.pokemonCard h1, .pokemonInfoCard h1 {
     text-align: center;
     margin-top: 8px;
     letter-spacing: 3px;
@@ -474,4 +499,46 @@ ul :nth-child(18) button:hover {
     border-radius: 4px;
     text-align: center;
     margin: auto;
+}
+
+.statContainer {
+    display: flex;
+    flex-direction: row;
+}
+
+.stats {
+    width: 75px;
+    height: 130px;
+    margin: auto;
+    border: 2px solid black;
+    background-color: rgb(47, 156, 214);
+}
+
+.value {
+    width: 100%;
+    background-color: white;
+}
+
+.hp {
+    background-color: white;
+}
+
+.attack {
+    background-color: white;
+}
+
+.defense {
+    background-color: white;
+}
+
+.special-attack {
+    background-color: white;
+}
+
+.special-defense {
+    background-color: white;
+}
+
+.speed {
+    background-color: white;
 }
