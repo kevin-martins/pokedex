@@ -1,4 +1,5 @@
 const pokemonContainerDoc = document.getElementById('pokemonContainer');
+const morePokemonInfoDoc = document.getElementById('morePokemonInfo');
 
 const typeColors = {
 	normal: "#AAB09F",
@@ -61,16 +62,89 @@ const printPokemonTypes = (pokemon) => {
         pokemonTypes.appendChild(pokemonType);
     });
     return pokemonTypes;
+};
+
+const printNoDamageTo = (damage) => {
+    
 }
 
-const printPokemonInfo = (pokemon) => {
-    console.log(pokemon.sprites['front_default']);
-    console.log(pokemon.sprites['front_shiny']);
-    console.log(pokemon.sprites.other["official-artwork"]["front_default"]);
-    console.log(pokemon.id);
+const printNoDamageFrom = (damage) => {
+    damage.forEach((type) => console.log(type.name));
 }
 
-//Get the pokemon information and print everything we need on the screen
+const printHalfDamageTo = (damage) => {
+    
+}
+
+const printHalfDamageFrom = (damage) => {
+    damage.forEach((type) => console.log(type.name));
+}
+
+const printDoubleDamageTo = (damage) => {
+    
+}
+
+const printDoubleDamageFrom = (damage) => {
+    damage.forEach((type) => console.log(type.name));
+    //console.log('double', damage);
+}
+
+const printDamageRelations = (damageRelations) => {
+    printDoubleDamageFrom(damageRelations['double_damage_from']);
+    printDoubleDamageTo(damageRelations['double_damage_to']);
+    printHalfDamageFrom(damageRelations['half_damage_from']);
+    printHalfDamageTo(damageRelations['half_damage_to']);
+    printNoDamageFrom(damageRelations['no_damage_from']);
+    printNoDamageTo(damageRelations['no_damage_to']);
+};
+
+const printPokemonGameImage = (pokemon) => {
+    const pokemonCardImage = document.createElement('div');
+    const pokemonGameImageNormal = document.createElement('img');
+    const pokemonGameImageShiny = document.createElement('img');
+
+    pokemonGameImageNormal.src = `${pokemon.sprites['front_default']}`;
+    pokemonGameImageShiny.src = `${pokemon.sprites['front_shiny']}`;
+
+    pokemonCardImage.className = '';
+    pokemonCardImage.appendChild(pokemonGameImageNormal);
+    pokemonCardImage.appendChild(pokemonGameImageShiny);
+    
+    return pokemonCardImage;
+}
+
+const printPokemonInfo = async (pokemon) => {
+    const data = await fetch(`https://pokeapi.co/api/v2/type`);
+    const dataTypes = await data.json();
+    const pokemonCard = document.createElement('div');
+    const exitButton = document.createElement('button');
+    const fragments = document.createDocumentFragment();
+
+    pokemonCard.className = 'pokemonInfoCard';
+    exitButton.onclick = function() {
+        morePokemonInfoDoc.classList.remove('filter');
+        morePokemonInfoDoc.classList.add('filterHidden');
+    };
+    morePokemonInfoDoc.classList.add('filter');
+    morePokemonInfoDoc.classList.remove('filterHidden');
+    morePokemonInfoDoc.innerHTML = "";
+
+    fragments.appendChild(printPokemonGameImage(pokemon));
+    pokemonCard.appendChild(fragments);
+    pokemon.types.forEach((elem) => {
+        dataTypes.results.forEach(async (type) => {
+            if (elem.type.name === type.name) {
+                const dataDamageRelation = await fetch(type.url);
+                const pokemonDamageRelation = await dataDamageRelation.json();
+                printDamageRelations(pokemonDamageRelation['damage_relations']);
+            }
+        })
+    })
+    morePokemonInfoDoc.appendChild(exitButton);
+    morePokemonInfoDoc.appendChild(pokemonCard);
+};
+
+//#region Get specific pokemon information and print everything we need from it to the screen
 const printPokemon = (pokemon) => {
     const pokemonCard = document.createElement('div');
     pokemonCard.className = "pokemonCard";
@@ -79,7 +153,6 @@ const printPokemon = (pokemon) => {
     const name = document.createTextNode(`${pokemon.name}`);
     pokemonName.appendChild(name);
 
-    
     const pokemonImage = document.createElement('img');
     pokemonImage.src = `${pokemon.sprites.other["official-artwork"]["front_default"]}`;
     pokemonImage.onclick = function() { return printPokemonInfo(pokemon) };
@@ -93,8 +166,11 @@ const printPokemon = (pokemon) => {
     // pokemonCard.appendChild(pokemonStats);
     pokemonCard.appendChild(printPokemonTypes(pokemon));
     return pokemonCard;
-}
+};
 
+//#endregion
+
+//#region Loop to print every pokemon
 
 const printAllPokemon = () => {
     const fragments = document.createDocumentFragment();
@@ -103,7 +179,11 @@ const printAllPokemon = () => {
         fragments.appendChild(printPokemon(pokemon));
     });
     pokemonContainerDoc.appendChild(fragments);
-}
+};
+
+//#endregion
+
+//#region Manage both Type & Name for search
 
 const getPokemonTypeName = () => {
     const fragments = document.createDocumentFragment();
@@ -120,9 +200,12 @@ const getPokemonTypeName = () => {
         }
     });
     pokemonContainerDoc.appendChild(fragments);
-}
+};
 
-// Check both, button selection & input text
+//#endregion
+
+//#region Check both, button selection & input text
+
 const checkBothTypeInput = () => {
     const elem = Object.entries(dataElem).map((value) => value[1]).every((value) => !value);
 
@@ -135,7 +218,9 @@ const checkBothTypeInput = () => {
     } else if (input && !elem) {
         getPokemonTypeName();
     }
-}
+};
+
+//#endregion
 
 //#region Manage & Result of input text
 
@@ -148,7 +233,7 @@ const getPokemonName = () => {
         }
     });
     pokemonContainerDoc.appendChild(fragments);
-}
+};
 
 const pokemonInputSearch = (event) => {
     if (event.key == "Backspace") {
@@ -205,7 +290,7 @@ const preparingData = () => {
     loadingContainerDoc.classList.remove('loadingContainer');
     interactiveContentDoc.classList.remove('mainHidden');
     printAllPokemon();
-}
+};
 
 //#endregion
 
@@ -213,7 +298,7 @@ const preparingData = () => {
 
 async function getData() {
     const arrayOfPromise = [];
-    for (let i = 1; i < 899; i++) {
+    for (let i = 1; i < 29; i++) {
         arrayOfPromise.push(fetch(`https://pokeapi.co/api/v2/pokemon/${i}`));
     }
 
@@ -223,12 +308,11 @@ async function getData() {
             if (result.status === "fulfilled") {
                 const data = await result.value.json();
                 pokemonData.push(data);
-                //console.log(data)
             }
         }
         preparingData();
     })
-}
+};
 
 //#endregion
 

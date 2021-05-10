@@ -396,6 +396,10 @@ ul :nth-child(18) button:hover {
     color: white;
 }
 
+.filterHidden {
+    display: none;
+}
+
 .filter {
     position: fixed;
     display: flex;
@@ -406,6 +410,17 @@ ul :nth-child(18) button:hover {
     width: 100%;
     height: 100vh;
     background-color: rgba(0, 0, 0, .3);
+}
+
+.pokemonInfoCard {
+    width: 600px;
+    height: 500px;
+    margin: 10px auto;
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, .15);
+}
+
+.pokemonInfoCard img {
+    width: 150px;
 }
 
 #pokemonInformation {
