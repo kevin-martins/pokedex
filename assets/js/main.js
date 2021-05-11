@@ -67,28 +67,27 @@ const printPokemonTypes = (pokemon) => {
 
 const printNoDamageTo = (damage) => {
     
-}
+};
 
 const printNoDamageFrom = (damage) => {
-    damage.forEach((type) => console.log(type.name));
-}
+    //damage.forEach((type) => console.log(type.name));
+};
 
 const printHalfDamageTo = (damage) => {
     
-}
+};
 
 const printHalfDamageFrom = (damage) => {
-    damage.forEach((type) => console.log(type.name));
-}
+    //damage.forEach((type) => console.log(type.name));
+};
 
 const printDoubleDamageTo = (damage) => {
     
-}
+};
 
 const printDoubleDamageFrom = (damage) => {
-    damage.forEach((type) => console.log(type.name));
-    //console.log('double', damage);
-}
+    //damage.forEach((type) => console.log(type.name));
+};
 
 const printDamageRelations = (damageRelations, fragments) => {
     printDoubleDamageFrom(damageRelations['double_damage_from']);
@@ -99,26 +98,34 @@ const printDamageRelations = (damageRelations, fragments) => {
     printNoDamageTo(damageRelations['no_damage_to']);
 };
 
-const printPokemonstats = (pokemon) => {
-    console.log(pokemon.stats);
+const printPokemonStats = (stats, statContainerDoc) => {
+    const container = document.createElement('div');
+    const statRangeDoc = document.createElement('div');
+    const statFilledRangeDoc = document.createElement('div');
+    const statTypeText = document.createElement('p');
+    const textNode = document.createTextNode(stats.stat.name);
+    const statValue = 100-(stats.base_stat/130)*100;
+    console.log(statValue, stats.base_stat);
+    container.className = 'statBlock';
+    statRangeDoc.className = 'stats';
+    statFilledRangeDoc.className = `${stats.stat.name}`;
+    statFilledRangeDoc.style.height = `${statValue}%`;
+
+    statRangeDoc.appendChild(statFilledRangeDoc);
+    container.appendChild(statRangeDoc);
+    statTypeText.appendChild(textNode);
+    container.appendChild(statTypeText);
+    statContainerDoc.appendChild(container);
+    
+    return statContainerDoc;
+};
+
+const pokemonstats = (pokemon) => {
     const fragments = document.createDocumentFragment();
     const statContainerDoc = document.createElement('section');
+    statContainerDoc.className = 'statContainer';
     pokemon.stats.forEach((stats) => {
-        const statDoc = document.createElement('div');
-        const statRangeDoc = document.createElement('div');
-        const statType = document.createTextNode(stats.stat.name);
-        const statValue = document.createTextNode(stats.base_stat);
-
-        statContainerDoc.className = 'statContainer';
-        statDoc.className = 'stats';
-        statRangeDoc.className = `${stats.stat.name}`;
-
-        statRangeDoc.style.height = `${(100-stats.base_stat)*1.3}%`;
-
-        statDoc.appendChild(statRangeDoc);
-        statDoc.appendChild(statType);
-        statContainerDoc.appendChild(statDoc);
-        fragments.appendChild(statContainerDoc);
+        fragments.appendChild(printPokemonStats(stats, statContainerDoc));
     });
     return fragments;
 };
@@ -143,7 +150,7 @@ const exitFilterButton = () => {
     pokemonInfoContainerDoc.classList.add('filterHidden');
 };
 
-const printPokemonInfo = async (pokemon) => {
+const pokemonInfo = async (pokemon) => {
     const data = await fetch(`https://pokeapi.co/api/v2/type`);
     const dataTypes = await data.json();
     const pokemonName = document.createElement('h1');
@@ -157,7 +164,7 @@ const printPokemonInfo = async (pokemon) => {
 
     fragments.appendChild(pokemonName);
     fragments.appendChild(printPokemonGameImage(pokemon));
-    fragments.appendChild(printPokemonstats(pokemon));
+    fragments.appendChild(pokemonstats(pokemon, fragments));
     morePokemonInfoDoc.appendChild(fragments);
     pokemon.types.forEach((elem) => {
         dataTypes.results.forEach(async (type) => {
@@ -167,11 +174,12 @@ const printPokemonInfo = async (pokemon) => {
                 printDamageRelations(pokemonDamageRelation['damage_relations'], fragments);
             }
         })
-    })
+    });
     pokemonInfoContainerDoc.appendChild(morePokemonInfoDoc);
 };
 
 //#region Get specific pokemon information and print everything we need from it to the screen
+
 const printPokemon = (pokemon) => {
     const pokemonCard = document.createElement('div');
     pokemonCard.className = "pokemonCard";
@@ -182,15 +190,10 @@ const printPokemon = (pokemon) => {
 
     const pokemonImage = document.createElement('img');
     pokemonImage.src = `${pokemon.sprites.other["official-artwork"]["front_default"]}`;
-    pokemonImage.onclick = function() { return printPokemonInfo(pokemon) };
-
-    // const pokemonStats = document.createElement('div');
-    // pokemonStats.className = 'pokemonStats';
-    // pokemon.stats.forEach((elem) => console.log(elem))
+    pokemonImage.onclick = function() { return pokemonInfo(pokemon) };
 
     pokemonCard.appendChild(pokemonName);
     pokemonCard.appendChild(pokemonImage);
-    // pokemonCard.appendChild(pokemonStats);
     pokemonCard.appendChild(printPokemonTypes(pokemon));
     return pokemonCard;
 };
@@ -325,7 +328,7 @@ const preparingData = () => {
 
 async function getData() {
     const arrayOfPromise = [];
-    for (let i = 1; i < 29; i++) {
+    for (let i = 1; i < 899; i++) {
         arrayOfPromise.push(fetch(`https://pokeapi.co/api/v2/pokemon/${i}`));
     }
 
