@@ -104,7 +104,7 @@ const printPokemonStats = (stats, statContainerDoc) => {
     const statFilledRangeDoc = document.createElement('div');
     const statTypeText = document.createElement('p');
     const textNode = document.createTextNode(stats.stat.name);
-    const statValue = 100-(stats.base_stat/130)*100;
+    const statValue = (stats.base_stat/130)*100;
     console.log(statValue, stats.base_stat);
     container.className = 'statBlock';
     statRangeDoc.className = 'stats';
