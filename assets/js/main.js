@@ -103,15 +103,19 @@ const printPokemonStats = (stats, statContainerDoc) => {
     const statRangeDoc = document.createElement('div');
     const statFilledRangeDoc = document.createElement('div');
     const statTypeText = document.createElement('p');
+    const statValueText = document.createElement('p');
     const textNode = document.createTextNode(stats.stat.name);
-    const statValue = (stats.base_stat/130)*100;
-    console.log(statValue, stats.base_stat);
+    const statValue = Math.round(stats.base_stat/1.3);
+    const valueNode = document.createTextNode(statValue);
+
     container.className = 'statBlock';
     statRangeDoc.className = 'stats';
     statFilledRangeDoc.className = `${stats.stat.name}`;
     statFilledRangeDoc.style.height = `${statValue}%`;
 
     statRangeDoc.appendChild(statFilledRangeDoc);
+    statValueText.appendChild(valueNode);
+    statRangeDoc.appendChild(statValueText);
     container.appendChild(statRangeDoc);
     statTypeText.appendChild(textNode);
     container.appendChild(statTypeText);
