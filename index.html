@@ -6,37 +6,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pokedex</title>
     <link rel="stylesheet" href="assets/css/style.css">
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
 </head>
 <body>
     <header>
         <h1>Pokedex</h1>
-        <p>All Pokemon in one place</p>
+        <p>All Pokemons in one place</p>
     </header>
 
-    <div class="loadingContainer" id="loadingContainer">
-        <div class="loadingAnimation" id="loadingAnimation">
-            <span style="--i:1;"></span>
-            <span style="--i:2;"></span>
-            <span style="--i:3;"></span>
-            <span style="--i:4;"></span>
-            <span style="--i:5;"></span>
-            <span style="--i:6;"></span>
-            <span style="--i:7;"></span>
-            <span style="--i:8;"></span>
-            <span style="--i:9;"></span>
-            <span style="--i:10;"></span>
-            <span style="--i:11;"></span>
-            <span style="--i:12;"></span>
-            <span style="--i:13;"></span>
-            <span style="--i:14;"></span>
-            <span style="--i:15;"></span>
-            <span style="--i:16;"></span>
-            <span style="--i:17;"></span>
-            <span style="--i:18;"></span>
-            <span style="--i:19;"></span>
-            <span style="--i:20;"></span>
-        </div>
-    </div>
+    <div class="o-pokeball u-pulse" id="loading"></div>
 
     <div class="mainHidden" id="main">
         <div class="searchBar">
@@ -121,8 +102,8 @@
     </div>
 
     <div class="filterHidden" id="pokemonInfoContainer">
-        <button onclick="exitFilterButton()">X</button>
-        <div class="pokemonInfoCard" id="morePokemonInfo"></div>
+        <div class="pokemonInfoCard" id="morePokemonInfo">
+        </div>
     </div>
 
     <div id="pokemonContainer">

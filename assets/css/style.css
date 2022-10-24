@@ -1,5 +1,6 @@
 :root {
     --gaugeColor: rgb(56, 160, 240);
+    --size: 100px;
 }
 
 * {
@@ -30,57 +31,54 @@ header p {
     display: none;
 }
 
-.loadingContainer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 75vh;
-}
-
-.loadingAnimation {
+.o-pokeball {
+    width: var(--size);
+    height: var(--size);
+    border-radius: var(--size);
+    border: solid 2px black;
     position: relative;
-    width: 120px;
-    height: 120px;
+    background: linear-gradient(to bottom, #eeeeee 0%, #ffffff 100%);
+    margin: 180px auto;
 }
 
-.loadingAnimation span {
-    position: absolute;
-    top: 0;
-    left: 0;
+.o-pokeball:before, .o-pokeball:after {
+    content: "";
+    display: block;
+}
+
+.o-pokeball, .o-pokeball:before, .o-pokeball:after {
+    transition: all 600ms cubic-bezier(0.67, 0.4, 0.36, 0.75);
+}
+
+.o-pokeball:before {
     width: 100%;
-    height: 100%;
-    transform: rotate(calc(18deg * var(--i)));
+    height: calc(var(--size) / 2 - var(--size) / 25 / 2);
+    border-bottom: solid calc(var(--size) / 25) black;
+    border-radius: calc(var(--size) / 2) calc(var(--size) / 2) 0 0;
+    background: linear-gradient(to bottom, #d10000 0%, #ff0000 50%);
 }
 
-.loadingAnimation span::before {
-    content: '';
+.o-pokeball:after {
+    content: "";
+    width: calc(var(--size) / 5);
+    height: calc(var(--size) / 5);
+    background: linear-gradient(to bottom, #fff 0%, #ccc 100%);
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 15px;
-    height: 15px;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
     border-radius: 50%;
-    background: grey;
-    box-shadow: 0 0 10px grey,
-                0 0 20px grey,
-                0 0 40px grey,
-                0 0 60px grey,
-                0 0 80px grey,
-                0 0 100px grey;
-    animation: animate 2s linear infinite;
-    animation-play-state: running;
-    animation-delay: calc(0.1s * var(--i));
+    box-shadow: 0 0 0 calc(var(--size) / 50) black,
+                0 0 0 calc(var(--size) / 25) #ddd,
+                0 0 0 calc(var(--size) / 14) black,
+                0 0 calc(var(--size) / 10) calc(var(--size) / 17) rgba(0, 0, 0, 0.4);
 }
 
-@keyframes animate {
-    0% {
-        transform: scale(1);
-    }
-    80%, 100% {
-        transform: scale(0);
-    }
+.u-pulse {
+    -webkit-animation: pulse 500ms infinite;
+    animation: pulse 500ms infinite;
 }
+/* transform: rotate(calc(18deg * var(--i))); */
 
 .mainHidden {
     display: none;
@@ -107,6 +105,9 @@ nav {
     margin: auto;
 }
 
+
+/*#region Type buttons */
+
 ul {
     list-style-type: none;
     display: flex;
@@ -122,12 +123,17 @@ li {
     padding: 2px 10px;
 }
 
+button:hover {
+    color: white;
+}
+
 button {
     width: 100%;
     height: 30px;
     font-size: 1.1em;
     border: none;
     border-radius: 10px;
+    cursor: pointer;
 }
 
 .fireUnfocus {
@@ -139,10 +145,13 @@ button {
     color: white;
 }
 
-ul :nth-child(1) button:hover {
-    cursor: pointer;
-    background-color: #eb7a3d;
-    color: white;
+.fireFocus:hover {
+    background-color: gray;
+    color: #EA7A3C;
+}
+
+.fireUnfocus:hover {
+    background-color: #EA7A3C;
 }
 
 .waterUnfocus {
@@ -155,9 +164,7 @@ ul :nth-child(1) button:hover {
 }
 
 ul :nth-child(2) button:hover {
-    cursor: pointer;
     background-color: #539AE2;
-    color: white;
 }
 
 .grassUnfocus {
@@ -170,9 +177,7 @@ ul :nth-child(2) button:hover {
 }
 
 ul :nth-child(3) button:hover {
-    cursor: pointer;
     background-color: #71C558;
-    color: white;
 }
 
 .bugUnfocus {
@@ -185,9 +190,7 @@ ul :nth-child(3) button:hover {
 }
 
 ul :nth-child(4) button:hover {
-    cursor: pointer;
     background-color: #94BC4A;
-    color: white;
 }
 
 .flyingUnfocus {
@@ -200,9 +203,7 @@ ul :nth-child(4) button:hover {
 }
 
 ul :nth-child(5) button:hover {
-    cursor: pointer;
     background-color: #7DA6DE;
-    color: white;
 }
 
 .normalUnfocus {
@@ -215,9 +216,7 @@ ul :nth-child(5) button:hover {
 }
 
 ul :nth-child(6) button:hover {
-    cursor: pointer;
     background-color: #AAB09F;
-    color: white;
 }
 
 .poisonUnfocus {
@@ -230,9 +229,7 @@ ul :nth-child(6) button:hover {
 }
 
 ul :nth-child(7) button:hover {
-    cursor: pointer;
     background-color: #B468B7;
-    color: white;
 }
 
 .electricUnfocus {
@@ -245,9 +242,7 @@ ul :nth-child(7) button:hover {
 }
 
 ul :nth-child(8) button:hover {
-    cursor: pointer;
     background-color: #E5C531;
-    color: white;
 }
 
 .groundUnfocus {
@@ -260,9 +255,7 @@ ul :nth-child(8) button:hover {
 }
 
 ul :nth-child(9) button:hover {
-    cursor: pointer;
     background-color: #CC9F4F;
-    color: white;
 }
 
 .fairyUnfocus {
@@ -275,9 +268,7 @@ ul :nth-child(9) button:hover {
 }
 
 ul :nth-child(10) button:hover {
-    cursor: pointer;
     background-color: #E397D1;
-    color: white;
 }
 
 .fightingUnfocus {
@@ -290,9 +281,7 @@ ul :nth-child(10) button:hover {
 }
 
 ul :nth-child(11) button:hover {
-    cursor: pointer;
     background-color: #CB5F48;
-    color: white;
 }
 
 .psychicUnfocus {
@@ -305,9 +294,7 @@ ul :nth-child(11) button:hover {
 }
 
 ul :nth-child(12) button:hover {
-    cursor: pointer;
     background-color: #E5709B;
-    color: white;
 }
 
 .rockUnfocus {
@@ -320,9 +307,7 @@ ul :nth-child(12) button:hover {
 }
 
 ul :nth-child(13) button:hover {
-    cursor: pointer;
     background-color: #B2A061;
-    color: white;
 }
 
 .ghostUnfocus {
@@ -335,9 +320,7 @@ ul :nth-child(13) button:hover {
 }
 
 ul :nth-child(14) button:hover {
-    cursor: pointer;
     background-color: #846AB6;
-    color: white;
 }
 
 .iceUnfocus {
@@ -350,9 +333,7 @@ ul :nth-child(14) button:hover {
 }
 
 ul :nth-child(15) button:hover {
-    cursor: pointer;
     background-color: #70CBD4;
-    color: white;
 }
 
 .dragonUnfocus {
@@ -365,9 +346,7 @@ ul :nth-child(15) button:hover {
 }
 
 ul :nth-child(16) button:hover {
-    cursor: pointer;
     background-color: #6A7BAF;
-    color: white;
 }
 
 .darkUnfocus {
@@ -380,9 +359,7 @@ ul :nth-child(16) button:hover {
 }
 
 ul :nth-child(17) button:hover {
-    cursor: pointer;
     background-color: #736C75;
-    color: white;
 }
 
 .steelUnfocus {
@@ -395,10 +372,10 @@ ul :nth-child(17) button:hover {
 }
 
 ul :nth-child(18) button:hover {
-    cursor: pointer;
     background-color: #89A1B0;
-    color: white;
 }
+
+/*#endregion Type buttons */
 
 .filterHidden {
     display: none;
@@ -410,17 +387,30 @@ ul :nth-child(18) button:hover {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    cursor: pointer;
     right: 0px;
     top: 0;
     width: 100%;
     height: 100vh;
-    background-color: rgba(0, 0, 0, .7);
+    background-color: rgba(0, 0, 0, .6);
     z-index: 1;
 }
 
+.closePokemonInfoCard {
+    border: 1px solid red;
+}
+
+.openPokemonInfoCard {
+    border: 1px solid white;
+}
+
 .pokemonInfoCard {
-    width: 600px;
-    height: 500px;
+    cursor: default;
+    position: relative;
+    display: block;
+    z-index: 5;
+    width: 580px;
+    height: 450px;
     margin: 10px auto;
     background-color: white;
     border-radius: 15px;
@@ -428,22 +418,6 @@ ul :nth-child(18) button:hover {
 
 .pokemonInfoCard img {
     width: 200px;
-}
-
-.filter button {
-    position: relative;
-    left: 32vh;
-    width: 50px;
-    height: 50px;
-    background-color: none;
-}
-
-.filter button:hover {
-    color: rgb(255, 0, 0);
-    cursor: pointer;
-    font-size: 1.6rem;
-    font-weight: bold;
-    background-color: rgba(255, 255, 255, 0.7);
 }
 
 .pokemonImageCard {
@@ -474,6 +448,7 @@ ul :nth-child(18) button:hover {
 }
 
 .pokemonCard h1, .pokemonInfoCard h1 {
+    transform: skewX(20deg);
     text-align: center;
     margin-top: 8px;
     letter-spacing: 3px;
@@ -506,36 +481,50 @@ ul :nth-child(18) button:hover {
 }
 
 .statContainer {
-    display: flex;
-    flex-direction: row;
-    max-width: 550px;
-    margin: auto;
+    margin-left: 32px;
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    max-width: 500px;
+    /* margin: auto; */
 }
 
 .statBlock {
+    position: relative;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     text-align: center;
-    width: 60px;
+    width: 50px;
     margin: auto;
 }
 
-.statBlock p {
-    width: 70px;
-    word-break: break-all;
+.statBlock > p {
+    position: absolute;
+    width: 140px;
+    text-align: left;
+    margin-top: 15px;
+    top: 0;
+    left: 73px;
+    transform-origin: 0 0;
+    transform: rotate(90deg);
+    font-size: 1.2em;
 }
 
 .stats {
     width: 100%;
-    height: 130px;
+    height: 135px;
     margin: 10px auto;
-    border: 2px solid black;
+    border: 1px solid black;
     background-color: rgba(255, 255, 255, 0);
+    border-radius: 50px;
+    overflow: hidden;
     transform: rotate(180deg);
 }
 
 .stats p {
     width: 100%;
+    margin-top: -20px;
+    color: white;
+    font-weight: 600;
     transform: rotate(180deg);
 }
 
