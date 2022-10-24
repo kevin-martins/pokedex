@@ -522,32 +522,46 @@ ul :nth-child(18) button:hover {
 
 .stats p {
     width: 100%;
-    margin-top: -20px;
+    margin-top: 40px;
     color: white;
     font-weight: 600;
     transform: rotate(180deg);
 }
 
-.hp {
-    background-color: var(--gaugeColor);
+.wave{
+    position:relative;
+    width: 70px;
+    height: 70px;
 }
 
-.attack {
-    background-color: var(--gaugeColor);
+.wave:before,.wave:after{
+    content:'';
+    position:absolute;
+    width:200%;
+    height:200%;
+    top: 0;
+    left: 40%;
+    transform:translate(-50%,-75%);
+    background:#000;
 }
 
-.defense {
-    background-color: var(--gaugeColor);
+.wave:before{
+    border-radius:45%;
+    background: var(--gaugeColor);
+    animation: animate 10s linear infinite;
+  }
+
+.wave:after{
+    border-radius:50%;
+    background:rgba(255,255,255,.5);
+    animation: animate 5s linear infinite;
 }
 
-.special-attack {
-    background-color: var(--gaugeColor);
-}
-
-.special-defense {
-    background-color: var(--gaugeColor);
-}
-
-.speed {
-    background-color: var(--gaugeColor);
+@keyframes animate{
+    0%{
+       transform:translate(-50%,-75%) rotate(0deg);
+    }
+    100%{
+       transform:translate(-50%,-75%) rotate(360deg);
+    }
 }
