@@ -351,7 +351,7 @@ const preparingData = () => {
 
 //#region Fetch data and stock into variable
 
-async function getData() {
+async function main() {
     const arrayOfPromise = [];
     for (let i = 1; i < 899; i++) {
         arrayOfPromise.push(fetch(`https://pokeapi.co/api/v2/pokemon/${i}`));
@@ -409,4 +409,4 @@ document.addEventListener('mouseover', (event) => {
     }
 });
 
-getData();
+main();

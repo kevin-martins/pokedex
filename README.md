@@ -15,4 +15,4 @@ Selecting a filter element will display every pokemon which has at least one of 
 
 # Have fun ?
 
-have fun ! https://kevin-martins.github.io/Pokedex/
+have fun ! https://kevin-martins.github.io/pokedex/
