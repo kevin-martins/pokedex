@@ -13,6 +13,6 @@ No need to submit the answer, it will search after each changes.
 The button here works as a filter. Each representing an pokemon's element type like (fire, water, grass, rock, etc...).
 Selecting a filter element will display every pokemon which has at least one of its type.
 
-# Have fun ?
+# Have fun !
 
 have fun ! https://kevin-martins.github.io/pokedex/
