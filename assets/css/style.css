@@ -445,10 +445,11 @@ ul :nth-child(18) button:hover {
     height: 400px;
     margin: 10px auto;
     box-shadow: 5px 5px 5px rgba(0, 0, 0, .15);
+    cursor: pointer;
 }
 
 .pokemonCard h1, .pokemonInfoCard h1 {
-    transform: skewX(20deg);
+    /* transform: skewX(12deg); */
     text-align: center;
     margin-top: 8px;
     letter-spacing: 3px;
@@ -460,9 +461,10 @@ ul :nth-child(18) button:hover {
     transition: .5s;
 }
 
-.pokemonCard img:hover {
-    transform: scale(1.1);
-    cursor: pointer;
+.pokemonCard:hover > img {
+    transform: scale(1.05);
+    -webkit-filter: drop-shadow(5px 5px 0 rgb(0, 0, 0, .7));
+    filter: drop-shadow(5px 5px 0 rgb(0, 0, 0, .7));
 }
 
 .pokemonTypes {
