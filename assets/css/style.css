@@ -377,6 +377,17 @@ ul :nth-child(18) button:hover {
 
 /*#endregion Type buttons */
 
+/*#region Switch button */
+
+select {
+    margin: 0 auto;
+    /* display: flex;
+    align-items: center;
+    width: 100%; */
+}
+
+/*#endregion Switch button */
+
 .filterHidden {
     display: none;
 }

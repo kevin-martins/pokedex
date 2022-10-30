@@ -5,11 +5,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pokedex</title>
-    <link rel="stylesheet" href="assets/css/style.css">
     <link
         rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
     />
+    <link rel="stylesheet" href="assets/css/style.css">
+    <script src="assets/js/main.js" defer></script>
     <link rel="icon" href="http://example.com/favicon.png">
 </head>
 <body>
@@ -23,94 +24,95 @@
     <div class="mainHidden" id="main">
         <div class="searchBar">
             <label for="search"></label>
-            <input type="text" id="search" onkeydown="pokemonInputSearch(event)">
+            <input type="text" id="search" onkeydown="inputSearch(event)">
         </div>
+        <select name="type" id="type-select" onclick="switchButton(event)">
+            <option value="selected">pokemons has selected elements</option>
+            <option value="atleast">pokemons has at least selected elements</option> 
+            <option value="all">pokemon has all selected elements</option>
+        </select>
         <nav>
             <ul>
                 <li>
-                    <button class="fireUnfocus" id="fire" onclick="elementFilter('fire')">fire</button>
+                    <button class="fireUnfocus" id="fire" onclick="filterType('fire')">fire</button>
                 </li>
 
                 <li>
-                    <button class="waterUnfocus" id="water" onclick="elementFilter('water')">water</button>
+                    <button class="waterUnfocus" id="water" onclick="filterType('water')">water</button>
                 </li>
 
                 <li>
-                    <button class="grassUnfocus" id="grass" onclick="elementFilter('grass')">grass</button>
+                    <button class="grassUnfocus" id="grass" onclick="filterType('grass')">grass</button>
                 </li>
 
                 <li>
-                    <button class="bugUnfocus" id="bug" onclick="elementFilter('bug')">bug</button>
+                    <button class="bugUnfocus" id="bug" onclick="filterType('bug')">bug</button>
                 </li>
 
                 <li>
-                    <button class="flyingUnfocus" id="flying" onclick="elementFilter('flying')">flying</button>
+                    <button class="flyingUnfocus" id="flying" onclick="filterType('flying')">flying</button>
                 </li>
 
                 <li>
-                    <button class="normalUnfocus" id="normal" onclick="elementFilter('normal')">normal</button>
+                    <button class="normalUnfocus" id="normal" onclick="filterType('normal')">normal</button>
                 </li>
 
                 <li>
-                    <button class="poisonUnfocus" id="poison" onclick="elementFilter('poison')">poison</button>
+                    <button class="poisonUnfocus" id="poison" onclick="filterType('poison')">poison</button>
                 </li>
 
                 <li>
-                    <button class="electricUnfocus" id="electric" onclick="elementFilter('electric')">electric</button>
+                    <button class="electricUnfocus" id="electric" onclick="filterType('electric')">electric</button>
                 </li>
 
                 <li>
-                    <button class="groundUnfocus" id="ground" onclick="elementFilter('ground')">ground</button>
+                    <button class="groundUnfocus" id="ground" onclick="filterType('ground')">ground</button>
                 </li>
 
                 <li>
-                    <button class="fairyUnfocus" id="fairy" onclick="elementFilter('fairy')">fairy</button>
+                    <button class="fairyUnfocus" id="fairy" onclick="filterType('fairy')">fairy</button>
                 </li>
 
                 <li>
-                    <button class="fightingUnfocus" id="fighting" onclick="elementFilter('fighting')">fighting</button>
+                    <button class="fightingUnfocus" id="fighting" onclick="filterType('fighting')">fighting</button>
                 </li>
 
                 <li>
-                    <button class="psychicUnfocus" id="psychic" onclick="elementFilter('psychic')">psychic</button>
+                    <button class="psychicUnfocus" id="psychic" onclick="filterType('psychic')">psychic</button>
                 </li>
 
                 <li>
-                    <button class="rockUnfocus" id="rock" onclick="elementFilter('rock')">rock</button>
+                    <button class="rockUnfocus" id="rock" onclick="filterType('rock')">rock</button>
                 </li>
 
                 <li>
-                    <button class="ghostUnfocus" id="ghost" onclick="elementFilter('ghost')">ghost</button>
+                    <button class="ghostUnfocus" id="ghost" onclick="filterType('ghost')">ghost</button>
                 </li>
 
                 <li>
-                    <button class="iceUnfocus" id="ice" onclick="elementFilter('ice')">ice</button>
+                    <button class="iceUnfocus" id="ice" onclick="filterType('ice')">ice</button>
                 </li>
 
                 <li>
-                    <button class="dragonUnfocus" id="dragon" onclick="elementFilter('dragon')">dragon</button>
+                    <button class="dragonUnfocus" id="dragon" onclick="filterType('dragon')">dragon</button>
                 </li>
 
                 <li>
-                    <button class="darkUnfocus" id="dark" onclick="elementFilter('dark')">dark</button>
+                    <button class="darkUnfocus" id="dark" onclick="filterType('dark')">dark</button>
                 </li>
 
                 <li>
-                    <button class="steelUnfocus" id="steel" onclick="elementFilter('steel')">steel</button>
+                    <button class="steelUnfocus" id="steel" onclick="filterType('steel')">steel</button>
                 </li>
             </ul>
         </nav>
     </div>
 
     <div class="filterHidden" id="pokemonInfoContainer">
-        <div class="pokemonInfoCard animate__animated animate__fadeInRight" id="morePokemonInfo">
-        </div>
+        <div class="pokemonInfoCard animate__animated animate__fadeInRight" id="morePokemonInfo"></div>
     </div>
 
     <div id="pokemonContainer">
-
     </div>
-
-    <script src="assets/js/main.js"></script>
 </body>
 </html>

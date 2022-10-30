@@ -2,7 +2,7 @@ const pokemonContainerDoc = document.getElementById('pokemonContainer');
 const pokemonInfoContainerDoc = document.getElementById('pokemonInfoContainer');
 const morePokemonInfoDoc = document.getElementById('morePokemonInfo');
 
-const typeColors = {
+const elementColors = {
 	normal: "#AAB09F",
 	fire: "#eb7a3d",
 	water: "#539AE2",
@@ -23,7 +23,7 @@ const typeColors = {
     fairy: "#E397D1",
 };
 
-var dataElem = {
+var elementSelected = {
     fire: false,
     water: false,
     grass: false,
@@ -46,9 +46,8 @@ var dataElem = {
 
 //Get the value input
 var input = "";
-//Used to check if pokemon is already print (not get pokemon occurences)
-var pokemonId = [];
-//Get pokemon API
+var searchOption = "selected";
+// Store fetch response
 var pokemonData = [];
 
 //Return all pokemon's type
@@ -58,7 +57,7 @@ const printPokemonTypes = (pokemon) => {
     pokemon.types.forEach((elem) => {
         const pokemonType = document.createElement('p');
         const type = document.createTextNode(elem.type.name);
-        pokemonType.style.background = typeColors[elem.type.name];
+        pokemonType.style.background = elementColors[elem.type.name];
         pokemonType.appendChild(type)
         pokemonTypes.appendChild(pokemonType);
     });
@@ -106,14 +105,9 @@ const printDoubleDamageFrom = (damage) => {
     return list
 };
 
-const printDamageRelations = (damageRelations) => {
-    // const fragments = document.createDocumentFragment();
-    // const damageVariation = document.createElement('section');
-    // console.log(damageRelations)
-    // console.log(damageRelations['double_damage_from'])
-    // damageVariation.appendChild(printDoubleDamageFrom(damageRelations['double_damage_from']))
-    // fragments.appendChild(damageVariation);
-    // morePokemonInfoDoc.appendChild(fragments);
+const damageRelation = (damageRelations) => {
+    
+    
     
     // fragments.appendChild(printDoubleDamageTo(damageRelations['double_damage_to']));
     // fragments.appendChild(printHalfDamageFrom(damageRelations['half_damage_from']));
@@ -123,7 +117,17 @@ const printDamageRelations = (damageRelations) => {
     // container.appendChild(printDoubleDamageFrom(damageRelations['double_damage_from']));
 };
 
-const printPokemonStats = (stats, statContainerDoc) => {
+const pokemonDamageRelations = (pokemon) => {
+    const fragments = document.createDocumentFragment();
+
+    const damageVariation = document.createElement('section');
+    damageVariation.appendChild(printDoubleDamageFrom(damageRelations['double_damage_from']))
+    fragments.appendChild(damageVariation);
+    morePokemonInfoDoc.appendChild(fragments);
+    return 
+}
+
+const displayPokemonStats = (stats, statContainerDoc) => {
     const container = document.createElement('div');
     const statRangeDoc = document.createElement('div');
     const statFilledRangeDoc = document.createElement('div');
@@ -155,18 +159,18 @@ const pokemonstats = (pokemon) => {
     const statContainerDoc = document.createElement('section');
     statContainerDoc.className = 'statContainer';
     pokemon.stats.forEach((stats) => {
-        fragments.appendChild(printPokemonStats(stats, statContainerDoc));
+        fragments.appendChild(displayPokemonStats(stats, statContainerDoc));
     });
     return fragments;
 };
 
-const printPokemonGameImage = (pokemon) => {
+const pokemonGameApearence = (pokemon) => {
     const pokemonCardImage = document.createElement('div');
     const pokemonGameImageNormal = document.createElement('img');
     const pokemonGameImageShiny = document.createElement('img');
 
-    pokemonGameImageNormal.src = `${pokemon.sprites['front_default']}`;
-    pokemonGameImageShiny.src = `${pokemon.sprites['front_shiny']}`;
+    // pokemonGameImageNormal.src = `${pokemon.sprites['front_default']}`;
+    // pokemonGameImageShiny.src = `${pokemon.sprites['front_shiny']}`;
 
     pokemonCardImage.appendChild(pokemonGameImageNormal);
     pokemonCardImage.appendChild(pokemonGameImageShiny);
@@ -175,9 +179,7 @@ const printPokemonGameImage = (pokemon) => {
     return pokemonCardImage;
 };
 
-const pokemonInfo = async (pokemon) => {
-    const data = await fetch(`https://pokeapi.co/api/v2/type`);
-    const dataTypes = await data.json();
+const pokemonDetail = async (pokemon) => {
     const pokemonName = document.createElement('h1');
     const name = document.createTextNode(pokemon.name);
     const fragments = document.createDocumentFragment();
@@ -187,25 +189,17 @@ const pokemonInfo = async (pokemon) => {
     pokemonInfoContainerDoc.classList.remove('filterHidden');
     morePokemonInfoDoc.innerHTML = "";
     fragments.appendChild(pokemonName);
-    fragments.appendChild(printPokemonGameImage(pokemon));
+    // fragments.appendChild(pokemonGameApearence(pokemon));
     fragments.appendChild(pokemonstats(pokemon));
-    await pokemon.types.forEach((elem) => {
-        dataTypes.results.forEach(async (type) => {
-            if (elem.type.name === type.name) {
-                const dataDamageRelation = await fetch(type.url);
-                const pokemonDamageRelation = await dataDamageRelation.json();
-                // fragments.appendChild(printDamageRelations(pokemonDamageRelation['damage_relations']));
-                printDamageRelations(pokemonDamageRelation['damage_relations'])
-            }
-        })
-    });
+    // fragments.appendChild(pokemonDamageRelations(pokemon));
+
     morePokemonInfoDoc.appendChild(fragments);
     pokemonInfoContainerDoc.appendChild(morePokemonInfoDoc);
 };
 
-//#region Get specific pokemon information and print everything we need from it to the screen
+//#region Display pokemon's card
 
-const printPokemon = (pokemon) => {
+const createPokemonCard = (pokemon) => {
     const pokemonCard = document.createElement('div');
     pokemonCard.className = "pokemonCard";
 
@@ -214,8 +208,9 @@ const printPokemon = (pokemon) => {
     pokemonName.appendChild(name);
 
     const pokemonImage = document.createElement('img');
-    pokemonImage.src = `${pokemon.sprites.other["official-artwork"]["front_default"]}`;
-    pokemonImage.onclick = function() { return pokemonInfo(pokemon) };
+    pokemonImage.src = `${pokemon.sprite}`;
+
+    pokemonCard.onclick = () => { return pokemonDetail(pokemon) };
 
     pokemonCard.appendChild(pokemonName);
     pokemonCard.appendChild(pokemonImage);
@@ -223,74 +218,175 @@ const printPokemon = (pokemon) => {
     return pokemonCard;
 };
 
-//#endregion
-
-//#region Loop to print every pokemon
-
-const printAllPokemon = () => {
+const displayPokemons = (newPokemonData, reset = true) => {
     const fragments = document.createDocumentFragment();
-    pokemonContainerDoc.innerHTML = "";
-    pokemonData.forEach((pokemon) => {
-        fragments.appendChild(printPokemon(pokemon));
+    if (reset) resetPokemonsCards();
+    newPokemonData.forEach((pokemon) => {
+        fragments.appendChild(createPokemonCard(pokemon));
     });
     pokemonContainerDoc.appendChild(fragments);
 };
 
 //#endregion
 
-//#region Manage both Type & Name for search
+//#region Search treatment
 
-const getPokemonTypeName = () => {
-    const fragments = document.createDocumentFragment();
-    pokemonContainerDoc.innerHTML = "";
-    pokemonId = [];
-    pokemonData.forEach((pokemon) => {
-        if (pokemon.name.includes(input)) {
-            pokemon.types.forEach((elem) => {
-                if (dataElem[elem.type.name] && !pokemonId.includes(pokemon.id)) {
-                    pokemonId.push(pokemon.id);
-                    fragments.appendChild(printPokemon(pokemon));
+const getPokemonsByTypeAndName = () => {
+    return pokemonData.reduce((acc, cur) => {
+        if (cur.name.includes(input)) {
+            cur.types.forEach((elem) => {
+                if (elementSelected[elem.type.name]) {
+                    acc.push(cur);
                 }
             });
         }
+        return acc;
     });
-    pokemonContainerDoc.appendChild(fragments);
 };
 
-//#endregion
+const getPokemonsByOption = (newPokemonData) => {
+    if (searchOption === 'all') return getPokemonsByAllSelectedElements(newPokemonData);
+    else if (searchOption === 'atleast') return getPokemonsByAtLeastSelectedElement(newPokemonData);
+    return getPokemonsBySelectedElement(newPokemonData);
+}
 
-//#region Check both, button selection & input text
+const getPokemonsBySelectedElement = (newPokemonData) => {
+    const typeSelected = Object.entries(elementSelected).reduce((acc, cur) => {
+        if (cur[1])
+            acc.push(cur[0])
+        return acc;
+    }, []);
 
-const checkBothTypeInput = () => {
-    const elem = Object.entries(dataElem).map((value) => value[1]).every((value) => !value);
+    return newPokemonData.reduce((acc, cur) => {
+        cur.types.forEach((elem) => {
+            if (typeSelected.includes(elem.type.name)) 
+                acc.push(cur);
+        })
+        // console.log('here:', cur)
+        return acc;
+    }, []);
+}
 
-    if (!input && elem) {
-        printAllPokemon();
-    } else if (input && elem) {
-        getPokemonName();
-    } else if (!input && !elem) {
-        getPokemonType();
-    } else if (input && !elem) {
-        getPokemonTypeName();
-    }
-};
+const getPokemonsByAtLeastSelectedElement = (newPokemonData) => {
+    const typeSelected = Object.entries(elementSelected).reduce((acc, cur) => {
+        if (cur[1])
+            acc.push(cur[0]);
+        return acc;
+    }, []);
 
-//#endregion
+    return newPokemonData.reduce((acc, cur) => {
+        const pokemonTypes = [];
+        cur.types.forEach((elem) => {
+            pokemonTypes.push(elem.type.name)
+        })
+        if (pokemonTypes.map(type => typeSelected.includes(type)).some(value => value === true))
+            acc.push(cur);
+        return acc;
+    }, []);
+}
 
-//#region Manage & Result of input text
+const getPokemonsByAllSelectedElements = (newPokemonData) => {
+    const pokemons = [];
+    const typeSelected = Object.entries(elementSelected).reduce((acc, cur) => {
+        if (cur[1])
+            acc.push(cur[0])
+        return acc;
+    }, []);
 
-const getPokemonName = () => {
-    const fragments = document.createDocumentFragment();
-    pokemonContainerDoc.innerHTML = "";
-    pokemonData.forEach((pokemon) => {
-        if (pokemon.name.includes(input)) {
-            fragments.appendChild(printPokemon(pokemon));
+    return newPokemonData.reduce((acc, cur) => {
+        const pokemonTypes = []
+        cur.types.forEach((elem) => {
+            pokemonTypes.push(elem.type.name)
+        })
+        if (typeSelected.map(type => pokemonTypes.includes(type)).every(value => value === true)) {
+            acc.push(cur);
         }
-    });
-    pokemonContainerDoc.appendChild(fragments);
+        return acc;
+    }, []);
+    // switch (typeSelected.length) {
+    //     case 1:
+    //         newPokemonData.forEach((pokemon) => {
+    //             pokemon.types.forEach((elem) => {
+    //                 if (typeSelected.includes(elem.type.name)) 
+    //                     pokemons.push(pokemon);
+    //             })
+    //         });
+    //         break;
+    //     case 2:
+    //         newPokemonData.forEach((pokemon) => {
+    //             const pokemonTypes = []
+    //             pokemon.types.forEach((elem) => {
+    //                 pokemonTypes.push(elem.type.name)
+    //             })
+    //             if (typeSelected.map(type => pokemonTypes.includes(type)).every(value => value === true)) {
+    //                 pokemons.push(pokemon);
+    //             }
+    //         });
+    //         break;
+    //     default:
+    //         break;
+    // }
+    // return pokemons;
 };
 
-const pokemonInputSearch = (event) => {
+const getElementsByType = (newPokemonData) => {
+    const typeSelected = Object.entries(elementSelected).reduce((acc, cur) => {
+        if (cur[1])
+            acc.push(cur[0])
+        return acc;
+    }, []);
+
+    return newPokemonData.reduce((acc, cur) => {
+        cur.types.forEach(pokemon => {
+            if (typeSelected.includes(pokemon.type.name))
+                acc.push(cur)
+        })
+        return acc;
+    }, []);
+}
+
+const getPokemonsByName = (newPokemonData) => {
+    return newPokemonData.reduce((acc, cur) => {
+        if (cur.name.includes(input))
+            acc.push(cur);
+        return acc;
+    }, []);
+};
+
+const hideCardsById = () => {
+    pokemonContainerDoc.querySelector("#child")
+}
+
+const checkUserEntries = () => {
+    const noTypeSelected = Object.entries(elementSelected).map((value) => value[1]).every((value) => value === false);
+    resetPokemonsCards();
+    var newPokemonData = pokemonData;
+
+    if (input.length > 0) newPokemonData = getPokemonsByName(newPokemonData);
+    if (!noTypeSelected) {
+        newPokemonData = getElementsByType(newPokemonData);
+        newPokemonData = getPokemonsByOption(newPokemonData);
+    }
+    hideCardsById()
+    // checkOccur(pokemonData);
+    // console.log(newPokemonData)
+    // if (!input && elem) {
+    //     displayAllPokemons();
+    // } else if (input && elem) {
+    //     getPokemonsByName();
+    // } else if (!input && !elem) {
+    //     getPokemonsByAllSelectedElements();
+    // } else if (input && !elem) {
+    //     getPokemonsByTypeAndName();
+    // }
+    displayPokemons(newPokemonData);
+};
+
+//#endregion
+
+//#region User search
+
+const inputSearch = (event) => {
     if (event.key == "Backspace") {
         input = input.split('');
         input.pop();
@@ -298,58 +394,31 @@ const pokemonInputSearch = (event) => {
     } else if ("abcdefghijklmnopqrstuvwxyz".includes(event.key)) {
         input += event.key;
     }
-    checkBothTypeInput();
+    checkUserEntries();
 };
 
-//#endregion
+const switchButton = (event) => {
+    if (event.target.value != searchOption)
+        searchOption = event.target.value;
+    checkUserEntries();
+}
 
-//#region Manage & Result of button selection
-
-const getPokemonType = () => {
-    const fragments = document.createDocumentFragment();
-    pokemonContainerDoc.innerHTML = "";
-    pokemonId = [];
-    pokemonData.forEach((pokemon) => {
-        pokemon.types.forEach((elem) => {
-            if (dataElem[elem.type.name] && !pokemonId.includes(pokemon.id)) {
-                pokemonId.push(pokemon.id);
-                fragments.appendChild(printPokemon(pokemon));
-            }
-        });
-    });
-    pokemonContainerDoc.appendChild(fragments);
-};
-
-const elementFilter = (elem) => {
+const filterType = (elem) => {
     const button = document.getElementById(`${elem}`).classList;
-    dataElem[elem] = !dataElem[elem];
-    if (dataElem[elem]) {
+    elementSelected[elem] = !elementSelected[elem];
+    if (elementSelected[elem]) {
         button.add(`${elem}Focus`);
         button.remove(`${elem}Unfocus`);
     } else {
         button.remove(`${elem}Focus`);
         button.add(`${elem}Unfocus`);
     }
-    checkBothTypeInput();
+    checkUserEntries();
 };
 
 //#endregion
 
-//#region Set screen while data is ready to be used
-
-const preparingData = () => {
-    const loadingContainerDoc = document.getElementById("loading");
-    const interactiveContentDoc = document.getElementById('main');
-
-    loadingContainerDoc.classList.add('loadingHidden');
-    loadingContainerDoc.classList.remove('loading');
-    interactiveContentDoc.classList.remove('mainHidden');
-    printAllPokemon();
-};
-
-//#endregion
-
-//#region Fetch data and stock into variable
+//#region Fetch, stock and display data
 
 async function main() {
     const arrayOfPromise = [];
@@ -362,27 +431,67 @@ async function main() {
         for (result of results) {
             if (result.status === "fulfilled") {
                 const data = await result.value.json();
-                pokemonData.push(data);
+                // console.log(data.types.forEach(async (type) => {
+                //     fetch(type.type.url).then(res => res.json())
+                // }))
+                
+                pokemonData.push({
+                    id: data.id,
+                    name: data.name,
+                    stats: data.stats,
+                    types: data.types,
+                    sprite: data.sprites.other["official-artwork"]["front_default"],
+                    names: fetch(`https://pokeapi.co/api/v2/pokemon-species/${data.id}/`)
+                        .then(res => res.json())
+                        .then(res => res.names),
+                    ['damage-relation']: data.types.map(async (type) => {
+                        fetch(type.type.url)
+                            .then(res => res.json())
+                            .then(res => res["damage-relations"])
+                    })
+                });
             }
         }
-        preparingData();
     })
+    .then(() => {
+        checkOccur(pokemonData);
+        addClassById('loading', 'loadingHidden');
+        removeClassById('loading', 'loading');
+        removeClassById('main', 'mainHidden');
+        displayPokemons(pokemonData, false);
+    });
 };
 
+const checkOccur = (data) => {
+    const id = []
+    data.forEach((pokemon) => {
+        if (!id.includes(pokemon.id)) {
+            id.push(pokemon.id);
+        } else
+            console.log('occurence found on: ', pokemon.name);
+    });
+}
+
 //#endregion
+
+const resetPokemonsCards = () => { return pokemonContainerDoc.innerHTML = ""; }
+
+const addClassById = (id, className) => document.getElementById(id).classList.add(className);
+
+const removeClassById = (id, className) => document.getElementById(id).classList.remove(className);
 
 const exitModal = (event) => {
     pokemonInfoContainerDoc.classList.remove('filter');
     pokemonInfoContainerDoc.classList.add('filterHidden');
-    document.getElementById('morePokemonInfo').classList.add('animate__fadeInRight')
-    document.getElementById('morePokemonInfo').classList.remove('animate__fadeOutRight')
+    addClassById('morePokemonInfo', 'animate__fadeInRight')
+    removeClassById('morePokemonInfo', 'animate__fadeOutRight')
 };
 
 // Exit animation of the Pokemon Card
 document.addEventListener('click', (event) => {
     if (event.target.id === "pokemonInfoContainer") {
-        document.getElementById('morePokemonInfo').classList.remove('animate__fadeInRight')
-        document.getElementById('morePokemonInfo').classList.add('animate__fadeOutRight')
+        removeClassById('morePokemonInfo', 'animate__fadeInRight')
+        addClassById('morePokemonInfo', 'animate__fadeOutRight')
     }
 });
 
@@ -401,11 +510,11 @@ document.getElementById('morePokemonInfo').addEventListener(
 // border Pokemon Card whe out of card
 document.addEventListener('mouseover', (event) => {
     if (event.target.id === "pokemonInfoContainer") {
-        document.getElementById('morePokemonInfo').classList.add('closePokemonInfoCard')
-        document.getElementById('morePokemonInfo').classList.remove('openPokemonInfoCard')
+        addClassById('morePokemonInfo', 'closePokemonInfoCard')
+        removeClassById('morePokemonInfo', 'openPokemonInfoCard')
     } else {
-        document.getElementById('morePokemonInfo').classList.remove('closePokemonInfoCard')
-        document.getElementById('morePokemonInfo').classList.add('openPokemonInfoCard')
+        removeClassById('morePokemonInfo', 'closePokemonInfoCard')
+        addClassById('morePokemonInfo', 'openPokemonInfoCard')
     }
 });
 
