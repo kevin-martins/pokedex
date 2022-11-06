@@ -24,91 +24,113 @@
     <div class="mainHidden" id="main">
         <div class="searchBar">
             <label for="search"></label>
-            <input type="text" id="search" onkeydown="inputSearch(event)">
+            <input type="text" id="search" value="" onkeydown="inputSearch(event)">
         </div>
-        <select name="type" id="type-select" onclick="switchButton(event)">
-            <option value="selected">pokemons has selected elements</option>
-            <option value="atleast">pokemons has at least selected elements</option> 
-            <option value="all">pokemon has all selected elements</option>
-        </select>
-        <nav>
-            <ul>
-                <li>
-                    <button class="fireUnfocus" id="fire" onclick="filterType('fire')">fire</button>
-                </li>
-
-                <li>
-                    <button class="waterUnfocus" id="water" onclick="filterType('water')">water</button>
-                </li>
-
-                <li>
-                    <button class="grassUnfocus" id="grass" onclick="filterType('grass')">grass</button>
-                </li>
-
-                <li>
-                    <button class="bugUnfocus" id="bug" onclick="filterType('bug')">bug</button>
-                </li>
-
-                <li>
-                    <button class="flyingUnfocus" id="flying" onclick="filterType('flying')">flying</button>
-                </li>
-
-                <li>
-                    <button class="normalUnfocus" id="normal" onclick="filterType('normal')">normal</button>
-                </li>
-
-                <li>
-                    <button class="poisonUnfocus" id="poison" onclick="filterType('poison')">poison</button>
-                </li>
-
-                <li>
-                    <button class="electricUnfocus" id="electric" onclick="filterType('electric')">electric</button>
-                </li>
-
-                <li>
-                    <button class="groundUnfocus" id="ground" onclick="filterType('ground')">ground</button>
-                </li>
-
-                <li>
-                    <button class="fairyUnfocus" id="fairy" onclick="filterType('fairy')">fairy</button>
-                </li>
-
-                <li>
-                    <button class="fightingUnfocus" id="fighting" onclick="filterType('fighting')">fighting</button>
-                </li>
-
-                <li>
-                    <button class="psychicUnfocus" id="psychic" onclick="filterType('psychic')">psychic</button>
-                </li>
-
-                <li>
-                    <button class="rockUnfocus" id="rock" onclick="filterType('rock')">rock</button>
-                </li>
-
-                <li>
-                    <button class="ghostUnfocus" id="ghost" onclick="filterType('ghost')">ghost</button>
-                </li>
-
-                <li>
-                    <button class="iceUnfocus" id="ice" onclick="filterType('ice')">ice</button>
-                </li>
-
-                <li>
-                    <button class="dragonUnfocus" id="dragon" onclick="filterType('dragon')">dragon</button>
-                </li>
-
-                <li>
-                    <button class="darkUnfocus" id="dark" onclick="filterType('dark')">dark</button>
-                </li>
-
-                <li>
-                    <button class="steelUnfocus" id="steel" onclick="filterType('steel')">steel</button>
-                </li>
-            </ul>
-        </nav>
+        <button onclick="filterBehaviour('filter')" type="button">filters</button>
+        <div class="filter" id="filter">
+            <h2>Elements</h2>
+            <nav class="" id="nav-type">
+                <ul>
+                    <li>
+                        <button class="fireUnfocus" id="fire" onclick="filterType('fire')">fire</button>
+                    </li>
+    
+                    <li>
+                        <button class="waterUnfocus" id="water" onclick="filterType('water')">water</button>
+                    </li>
+    
+                    <li>
+                        <button class="grassUnfocus" id="grass" onclick="filterType('grass')">grass</button>
+                    </li>
+    
+                    <li>
+                        <button class="bugUnfocus" id="bug" onclick="filterType('bug')">bug</button>
+                    </li>
+    
+                    <li>
+                        <button class="flyingUnfocus" id="flying" onclick="filterType('flying')">flying</button>
+                    </li>
+    
+                    <li>
+                        <button class="normalUnfocus" id="normal" onclick="filterType('normal')">normal</button>
+                    </li>
+    
+                    <li>
+                        <button class="poisonUnfocus" id="poison" onclick="filterType('poison')">poison</button>
+                    </li>
+    
+                    <li>
+                        <button class="electricUnfocus" id="electric" onclick="filterType('electric')">electric</button>
+                    </li>
+    
+                    <li>
+                        <button class="groundUnfocus" id="ground" onclick="filterType('ground')">ground</button>
+                    </li>
+    
+                    <li>
+                        <button class="fairyUnfocus" id="fairy" onclick="filterType('fairy')">fairy</button>
+                    </li>
+    
+                    <li>
+                        <button class="fightingUnfocus" id="fighting" onclick="filterType('fighting')">fighting</button>
+                    </li>
+    
+                    <li>
+                        <button class="psychicUnfocus" id="psychic" onclick="filterType('psychic')">psychic</button>
+                    </li>
+    
+                    <li>
+                        <button class="rockUnfocus" id="rock" onclick="filterType('rock')">rock</button>
+                    </li>
+    
+                    <li>
+                        <button class="ghostUnfocus" id="ghost" onclick="filterType('ghost')">ghost</button>
+                    </li>
+    
+                    <li>
+                        <button class="iceUnfocus" id="ice" onclick="filterType('ice')">ice</button>
+                    </li>
+    
+                    <li>
+                        <button class="dragonUnfocus" id="dragon" onclick="filterType('dragon')">dragon</button>
+                    </li>
+    
+                    <li>
+                        <button class="darkUnfocus" id="dark" onclick="filterType('dark')">dark</button>
+                    </li>
+    
+                    <li>
+                        <button class="steelUnfocus" id="steel" onclick="filterType('steel')">steel</button>
+                    </li>
+                </ul>
+            </nav>
+            <h2>Stats</h2>
+            <nav class="" id="nav-types">
+                <ul>
+                    <li>
+                        <button class="" id="">hp</button>
+                    </li>
+                    <li>
+                        <button class="" id="">attack</button>
+                    </li>
+                    <li>
+                        <button class="" id="">defense</button>
+                    </li>
+                    <li>
+                        <button class="" id="">special-attack</button>
+                    </li>
+                    <li>
+                        <button class="" id="">special-defense</button>
+                    </li>
+                    <li>
+                        <button class="" id="">speed</button>
+                    </li>
+                </ul>
+            </nav>
+        </div>
     </div>
 
-    <div class="filterHidden" id="pokemonInfoContainer">
+    <div class="hidden" id="pokemonInfoContainer">
         <div class="pokemonInfoCard animate__animated animate__fadeInRight" id="morePokemonInfo"></div>
     </div>
 

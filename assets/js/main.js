@@ -46,9 +46,9 @@ var elementSelected = {
 
 //Get the value input
 var input = "";
-var searchOption = "selected";
 // Store fetch response
-var pokemonData = [];
+const pokemonData = [];
+var pokemonsToDisplay = [];
 
 //Return all pokemon's type
 const printPokemonTypes = (pokemon) => {
@@ -185,8 +185,8 @@ const pokemonDetail = async (pokemon) => {
     const fragments = document.createDocumentFragment();
 
     pokemonName.appendChild(name);
-    pokemonInfoContainerDoc.classList.add('filter');
-    pokemonInfoContainerDoc.classList.remove('filterHidden');
+    pokemonInfoContainerDoc.classList.add('modal-background');
+    pokemonInfoContainerDoc.classList.remove('hidden');
     morePokemonInfoDoc.innerHTML = "";
     fragments.appendChild(pokemonName);
     // fragments.appendChild(pokemonGameApearence(pokemon));
@@ -231,155 +231,51 @@ const displayPokemons = (newPokemonData, reset = true) => {
 
 //#region Search treatment
 
-const getPokemonsByTypeAndName = () => {
-    return pokemonData.reduce((acc, cur) => {
-        if (cur.name.includes(input)) {
-            cur.types.forEach((elem) => {
-                if (elementSelected[elem.type.name]) {
+const getElementsByType = (typeSelected) => {
+    switch (typeSelected.length) {
+        case 1:
+            return pokemonsToDisplay.reduce((acc, cur) => {
+                cur.types.forEach((elem) => {
+                    if (typeSelected.includes(elem.type.name)) 
+                        acc.push(cur);
+                })
+                return acc;
+            }, []);
+        case 2:
+            return pokemonsToDisplay.reduce((acc, cur) => {
+                const pokemonTypes = []
+                cur.types.forEach((elem) => {
+                    pokemonTypes.push(elem.type.name)
+                })
+                if (typeSelected.map(type => pokemonTypes.includes(type)).every(value => value === true)) {
                     acc.push(cur);
                 }
-            });
-        }
-        return acc;
-    });
-};
-
-const getPokemonsByOption = (newPokemonData) => {
-    if (searchOption === 'all') return getPokemonsByAllSelectedElements(newPokemonData);
-    else if (searchOption === 'atleast') return getPokemonsByAtLeastSelectedElement(newPokemonData);
-    return getPokemonsBySelectedElement(newPokemonData);
+                return acc;
+            }, []);
+        default:
+            return [];
+    }
 }
 
-const getPokemonsBySelectedElement = (newPokemonData) => {
-    const typeSelected = Object.entries(elementSelected).reduce((acc, cur) => {
-        if (cur[1])
-            acc.push(cur[0])
-        return acc;
-    }, []);
-
-    return newPokemonData.reduce((acc, cur) => {
-        cur.types.forEach((elem) => {
-            if (typeSelected.includes(elem.type.name)) 
-                acc.push(cur);
-        })
-        // console.log('here:', cur)
-        return acc;
-    }, []);
-}
-
-const getPokemonsByAtLeastSelectedElement = (newPokemonData) => {
-    const typeSelected = Object.entries(elementSelected).reduce((acc, cur) => {
-        if (cur[1])
-            acc.push(cur[0]);
-        return acc;
-    }, []);
-
-    return newPokemonData.reduce((acc, cur) => {
-        const pokemonTypes = [];
-        cur.types.forEach((elem) => {
-            pokemonTypes.push(elem.type.name)
-        })
-        if (pokemonTypes.map(type => typeSelected.includes(type)).some(value => value === true))
-            acc.push(cur);
-        return acc;
-    }, []);
-}
-
-const getPokemonsByAllSelectedElements = (newPokemonData) => {
-    const pokemons = [];
-    const typeSelected = Object.entries(elementSelected).reduce((acc, cur) => {
-        if (cur[1])
-            acc.push(cur[0])
-        return acc;
-    }, []);
-
-    return newPokemonData.reduce((acc, cur) => {
-        const pokemonTypes = []
-        cur.types.forEach((elem) => {
-            pokemonTypes.push(elem.type.name)
-        })
-        if (typeSelected.map(type => pokemonTypes.includes(type)).every(value => value === true)) {
-            acc.push(cur);
-        }
-        return acc;
-    }, []);
-    // switch (typeSelected.length) {
-    //     case 1:
-    //         newPokemonData.forEach((pokemon) => {
-    //             pokemon.types.forEach((elem) => {
-    //                 if (typeSelected.includes(elem.type.name)) 
-    //                     pokemons.push(pokemon);
-    //             })
-    //         });
-    //         break;
-    //     case 2:
-    //         newPokemonData.forEach((pokemon) => {
-    //             const pokemonTypes = []
-    //             pokemon.types.forEach((elem) => {
-    //                 pokemonTypes.push(elem.type.name)
-    //             })
-    //             if (typeSelected.map(type => pokemonTypes.includes(type)).every(value => value === true)) {
-    //                 pokemons.push(pokemon);
-    //             }
-    //         });
-    //         break;
-    //     default:
-    //         break;
-    // }
-    // return pokemons;
-};
-
-const getElementsByType = (newPokemonData) => {
-    const typeSelected = Object.entries(elementSelected).reduce((acc, cur) => {
-        if (cur[1])
-            acc.push(cur[0])
-        return acc;
-    }, []);
-
-    return newPokemonData.reduce((acc, cur) => {
-        cur.types.forEach(pokemon => {
-            if (typeSelected.includes(pokemon.type.name))
-                acc.push(cur)
-        })
-        return acc;
-    }, []);
-}
-
-const getPokemonsByName = (newPokemonData) => {
-    return newPokemonData.reduce((acc, cur) => {
+const getPokemonsByName = () => {
+    return pokemonsToDisplay.reduce((acc, cur) => {
         if (cur.name.includes(input))
             acc.push(cur);
         return acc;
     }, []);
 };
 
-const hideCardsById = () => {
-    pokemonContainerDoc.querySelector("#child")
-}
-
 const checkUserEntries = () => {
-    const noTypeSelected = Object.entries(elementSelected).map((value) => value[1]).every((value) => value === false);
-    resetPokemonsCards();
-    var newPokemonData = pokemonData;
+    const typeSelected = Object.entries(elementSelected).reduce((acc, cur) => {
+        if (cur[1])
+            acc.push(cur[0])
+        return acc;
+    }, []);
 
-    if (input.length > 0) newPokemonData = getPokemonsByName(newPokemonData);
-    if (!noTypeSelected) {
-        newPokemonData = getElementsByType(newPokemonData);
-        newPokemonData = getPokemonsByOption(newPokemonData);
-    }
-    hideCardsById()
-    // checkOccur(pokemonData);
-    // console.log(newPokemonData)
-    // if (!input && elem) {
-    //     displayAllPokemons();
-    // } else if (input && elem) {
-    //     getPokemonsByName();
-    // } else if (!input && !elem) {
-    //     getPokemonsByAllSelectedElements();
-    // } else if (input && !elem) {
-    //     getPokemonsByTypeAndName();
-    // }
-    displayPokemons(newPokemonData);
+    pokemonsToDisplay = pokemonData;
+    if (input.length > 0) pokemonsToDisplay = getPokemonsByName();
+    else if (typeSelected.length > 0) pokemonsToDisplay = getElementsByType(typeSelected);
+    displayPokemons(pokemonsToDisplay);
 };
 
 //#endregion
@@ -387,17 +283,14 @@ const checkUserEntries = () => {
 //#region User search
 
 const inputSearch = (event) => {
-    if (event.key == "Backspace") {
-        input = input.split('');
-        input.pop();
-        input = input.join('');
-    } else if ("abcdefghijklmnopqrstuvwxyz".includes(event.key)) {
-        input += event.key;
-    }
+    if ("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".includes(event.key))
+        input += event.key.toLowerCase();
+    else if (event.key === "Backspace")
+        input = input.slice(0, input.length - 1);
     checkUserEntries();
 };
 
-const switchButton = (event) => {
+const statSearch = (event) => {
     if (event.target.value != searchOption)
         searchOption = event.target.value;
     checkUserEntries();
@@ -418,46 +311,51 @@ const filterType = (elem) => {
 
 //#endregion
 
+const reorderPokemons = () => {
+    pokemonData.reduce((acc, cur) => {
+
+    })
+}
+
 //#region Fetch, stock and display data
 
 async function main() {
     const arrayOfPromise = [];
-    for (let i = 1; i < 899; i++) {
-        arrayOfPromise.push(fetch(`https://pokeapi.co/api/v2/pokemon/${i}`));
-    }
+    const data = await fetch(`https://pokeapi.co/api/v2/pokemon/?offset=0&limit=10000`).then(res => res.json())
+    data.results.forEach((pokemon, i) => {
+        arrayOfPromise.push(fetch(pokemon.url))
+    })
 
     Promise.allSettled(arrayOfPromise)
     .then(async (results) => {
         for (result of results) {
             if (result.status === "fulfilled") {
                 const data = await result.value.json();
-                // console.log(data.types.forEach(async (type) => {
-                //     fetch(type.type.url).then(res => res.json())
-                // }))
-                
                 pokemonData.push({
                     id: data.id,
                     name: data.name,
                     stats: data.stats,
                     types: data.types,
                     sprite: data.sprites.other["official-artwork"]["front_default"],
-                    names: fetch(`https://pokeapi.co/api/v2/pokemon-species/${data.id}/`)
-                        .then(res => res.json())
-                        .then(res => res.names),
-                    ['damage-relation']: data.types.map(async (type) => {
-                        fetch(type.type.url)
-                            .then(res => res.json())
-                            .then(res => res["damage-relations"])
-                    })
+                    // names: fetch(`https://pokeapi.co/api/v2/pokemon-species/${data.id}/`)
+                    //     .then(res => res.json())
+                    //     .then(res => res.names),
+                    // ['damage-relation']: data.types.map(async (type) => {
+                    //     fetch(type.type.url)
+                    //         .then(res => res.json())
+                    //         .then(res => res["damage-relations"])
+                    // })
                 });
             }
         }
     })
     .then(() => {
-        checkOccur(pokemonData);
+        // checkOccur(pokemonData);
+        reorderPokemons();
         addClassById('loading', 'loadingHidden');
         removeClassById('loading', 'loading');
         removeClassById('main', 'mainHidden');
+        pokemonsToDisplay = pokemonData;
         displayPokemons(pokemonData, false);
     });
 };
@@ -481,8 +379,8 @@ const addClassById = (id, className) => document.getElementById(id).classList.ad
 const removeClassById = (id, className) => document.getElementById(id).classList.remove(className);
 
 const exitModal = (event) => {
-    pokemonInfoContainerDoc.classList.remove('filter');
-    pokemonInfoContainerDoc.classList.add('filterHidden');
+    pokemonInfoContainerDoc.classList.remove('modal-background');
+    pokemonInfoContainerDoc.classList.add('hidden');
     addClassById('morePokemonInfo', 'animate__fadeInRight')
     removeClassById('morePokemonInfo', 'animate__fadeOutRight')
 };
@@ -494,6 +392,14 @@ document.addEventListener('click', (event) => {
         addClassById('morePokemonInfo', 'animate__fadeOutRight')
     }
 });
+
+const filterBehaviour = (childId) => {
+    if (document.getElementById(childId).classList.contains('hidden')) {
+        removeClassById(childId, 'hidden')
+    } else {
+        addClassById(childId, 'hidden')
+    }
+}
 
 // Call exit Modal when close Modal animation ends
 document.getElementById('morePokemonInfo').addEventListener(
