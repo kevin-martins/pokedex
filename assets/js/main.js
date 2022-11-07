@@ -47,7 +47,7 @@ var elementSelected = {
 //Get the value input
 var input = "";
 // Store fetch response
-const pokemonData = [];
+var pokemonData = [];
 var pokemonsToDisplay = [];
 
 //Return all pokemon's type
@@ -274,7 +274,7 @@ const checkUserEntries = () => {
 
     pokemonsToDisplay = pokemonData;
     if (input.length > 0) pokemonsToDisplay = getPokemonsByName();
-    else if (typeSelected.length > 0) pokemonsToDisplay = getElementsByType(typeSelected);
+    if (typeSelected.length > 0) pokemonsToDisplay = getElementsByType(typeSelected);
     displayPokemons(pokemonsToDisplay);
 };
 
@@ -311,10 +311,26 @@ const filterType = (elem) => {
 
 //#endregion
 
-const reorderPokemons = () => {
-    pokemonData.reduce((acc, cur) => {
+const getEvolutionIndex = () => {
+    for (let i = 0; i < pokemonData.length; i++) if (pokemonData[i].name.includes(" mega")) return i;
+}
 
-    })
+const reorderPokemons = () => {
+    let startIndex = getEvolutionIndex();
+    let j = 0;
+    for (let i = startIndex; i < pokemonData.length; i++) {
+        j = 0;
+        while (j < pokemonData.length) {
+            if (pokemonData[i].name.includes(pokemonData[j].name)) {
+                pokemonData.splice(j+1, 0, pokemonData[i]);
+                pokemonData.splice(i+1, 1);
+                console.log(pokemonData)
+                break;
+            }
+            j++;
+        }
+    }
+    // pokemonData = data;
 }
 
 //#region Fetch, stock and display data
@@ -333,7 +349,7 @@ async function main() {
                 const data = await result.value.json();
                 pokemonData.push({
                     id: data.id,
-                    name: data.name,
+                    name: data.name.replace('-', ' '),
                     stats: data.stats,
                     types: data.types,
                     sprite: data.sprites.other["official-artwork"]["front_default"],
